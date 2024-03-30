@@ -1,0 +1,8 @@
+@font-face {
+  font-family: PretendardVariable;
+  src: url("../font/PretendardVariable.woff2");
+}
+
+:root {
+  font-family: "Noto Sans KR", sans-serif;
+}
