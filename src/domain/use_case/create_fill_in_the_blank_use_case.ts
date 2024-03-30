@@ -23,7 +23,7 @@ export default class CreateFillInTheBlankUseCase {
     createQuestion(questionNum: number, blankNum: number, exclusion: string, inclusion: string): CodeResponse {
 
         const quoteList: string[] = [];
-        const blank: string = "[     ]"
+        const blank: string = "[     ]";
 		let combinationList: number[] = [];
 		let question: string = "";
         const questionList: string[] = [];
