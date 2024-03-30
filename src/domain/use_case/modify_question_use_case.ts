@@ -1,36 +1,78 @@
 import CodeResponse from "@/app/code_response";
 import { Result } from "@/app/types";
 
-export default class modify_question_use_case {  // 정답.오답 확인하는 메서드
+export default class ModifyQuestionUseCase {  // PascalCase로 수정 필요!!
+
+
     recreateQuestion(rawText: string, questionNum: number): CodeResponse {
         
-        /*
-        rawText에서 questionNum의 개수만큼 quote를 뽑아서 list의 형태로 출력해줘.
-        openAI에게 quoteList 받아오기
-        createQuestion() 함수 호출
+        const quoteKeyPhrasesPrompt: string = "Extract " + questionNum+ " quotes from the following text:\n" + rawText + "\nPlease give me the quotes in a format of a string list.";
+        const quoteList: string[] = []; //quoteKeyPhrasesPrompt를 기반으로 openAI의 답변
 
-        */
+        if (quoteList.length != questionNum) {
+            return new CodeResponse(Result.ERROR, "quoteList에서 에러가 발생하였습니다. 뽑아낸 quote의 개수가 사용자가 원하는 문제의 개수와 다릅니다.", "")
+        }
 
-        return new CodeResponse(Result.SUCCESS, "문제를 다시 내는 과정에서 에러가 발생했습니다.", "");
+        //quoteList의 각 quote를 DB에 업로드 (각 quote는 quoteID로 구분)
+
+        return new CodeResponse(Result.SUCCESS, "Quote를 다시 뽑아내는 과정에서 에러가 발생했습니다.", "");
     }
+
+
 
     relocateBlank(questionIndex: number, blankNum: number): CodeResponse {
 
-        /*
-        예시: 2번 문제를 수정한다고 하면, DB에서 2번 문제 quote와 2번 문제 keywordList를 가져온다.
-        DB에서 quote, keyword1, keyword2, keyword3를 가져온다.
-        keywordList에 세 개의 keyword를 저장한다.
+        const quoteList: string[] = [];
+        const blank: string = "[     ]"
+        let combinationList: number[] = [];
+        let question: string = "";
+        const keywordList: object[] = [];  //DB에서부터 keywordList 가져오기
+        const questionList: string[] = [];
         
+        let keywordValues: string[] = Object.values(keywordList[questionIndex]); // ["키워드1", "키워드2", "키워드3"];
+				
+        //DB에서 questionNum의 개수만큼 quote를 가져와 quoteList에 저장
+        
+        question = quoteList[questionIndex];
+        
+        if (blankNum <3) {
+            let r1 = Math.floor(Math.random() * 3);
+            combinationList.push(r1);
+                
+            if (blankNum === 2) {
+                let r2 = -1;		
+                while(true){
+                    r2 = Math.floor(Math.random() * 3);
+                    if (r1 != r2) break;
+                }
+                combinationList.push(r2);
+                combinationList.sort();
+            }
+        } else {combinationList = [0,1,2];}
+            
+        for (let j=0; j<combinationList.length; j++) {						
+            question = question.replace(keywordValues[combinationList[j]], blank); //combinationList[j] = 0, 1, 2 중 하나의 인덱스
+            questionList[questionIndex] = question;
+        }
 
-        랜덤으로 1,2,3 중 blankNum의 개수에 맞게 숫자를 추출   (예) 1,3
-
-        추출한 숫자에 맞게 다음을 수행:
-        - quote에서 keyword[i] substring 찾기
-        - substring을 "[   ]"으로 변경
-
-        변경된 quote를 리턴
-        */
-
-        return new CodeResponse(Result.SUCCESS, "빈칸 내는 과정에서 에러가 발생했습니다.", "");
+        return new CodeResponse(Result.SUCCESS, "빈칸 위치를 수정하는 과정에서 에러가 발생했습니다.", questionList);
     }
+    
+    
+    
+    deleteQuestion(questionIndex: number) {
+        //quoteList랑 keywordList랑 questionList에서 아얘 빼버린 뒤 questionNum--;
+        //혹은, UI적으로 질문만 가리기 (안 그러면 예외 처리 일일히 해야 함)
+        
+        return new CodeResponse(Result.SUCCESS, "문제를 삭제하는 과정에서 에러가 발생했습니다.", "");
+    }
+    
+    
+    
+    /*
+    setHashtag() {  //어느 UseCase에 넣을지 논의 후 수정 필요!!
+		return new CodeResponse(Result.SUCCESS, "해시태그를 다는 과정에서 에러가 발생했습니다.", "");
+    }
+    */
+    
 }
