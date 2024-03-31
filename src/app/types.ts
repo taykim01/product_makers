@@ -16,6 +16,8 @@ export enum Sex {
 }
 
 export type ResultCode = {
-  code: string,
-  message: string,
-}
+  code: string;
+  message: string;
+};
+
+export const blank: string = "[     ]";
