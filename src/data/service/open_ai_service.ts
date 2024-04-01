@@ -1,14 +1,99 @@
-// 박경빈
-
 import CodeResponse from "@/app/code_response";
 import { Result } from "@/app/types";
 
 export default class OpenAIService {
   getQuoteKeyPhrases(quoteKeyPhrasesPrompt: string): CodeResponse {
-    return new CodeResponse(Result.SUCCESS, "", "");
+    require('dotenv').config();
+    const OpenAIApi = require('openai');
+
+    const openai = new OpenAIApi({
+        api_key: 'process.env.OPENAI_API_KEY'
+    });
+      
+    try {
+      const response = openai.chat.completions.create({  // const response = await openai.chat.completions.create
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: "You are an expert teacher who quotes sentences from a given raw text. User will require you to quote sentences from a raw text."
+            +"\n\n- Do NOT change the text.\n- Do NOT summarize.\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form of string list."
+            +"\n\n###For Example###"
+            +"\nrawText = The most important aspect of yourself is your self. To discover where this sense of self"
+            +"\narises, neuroscientists have explored the brain activity that underlies our constant sense of"
+            +"\nbeing oneself. Most studies suggest an important role for the right hemisphere (van Veluw"
+            +"\n& Chance, 2014). Put yours to sleep (with an anesthetic to your right carotid artery) and"
+            +"\nself-concept"
+            +"\nWhat we know and believe about"
+            +"\nourselves."
+            +"\nyou may have trouble recognizing your own face. One patient with right hemisphere damage"
+            +"\nfailed to recognize that he owned and was controlling his left hand (Decety & Sommerville,"
+            +"\n2003). The “medial prefrontal cortex,” a neuron path located in the cleft between"
+            +"\nyour brain hemispheres just behind your eyes, seemingly helps stitch together your sense"
+            +"\nof self. It becomes more active when you think about yourself (Farb et al., 2007; Heleven"
+            +"\n& Van Overwalle, 2019; Zimmer, 2005). Despite the many ways we adapt our behavior,"
+            +"\nmost people believe that they have a true self that is unchangeable (Christy et al., 2019)."
+            +"\nThe elements of your self-concept, the specific beliefs by which you define yourself, are"
+            +"\nyour self-schemas (Markus & Wurf, 1987). Schemas are mental templates by which we"
+            +"\norganize our worlds. Our self-schemas — our perceiving ourselves as athletic, overweight,"
+            +"\nsmart, or anything else — powerfully affect how we perceive, remember, and evaluate other"
+            +"\npeople and ourselves. If being an athlete is one of your self-schemas, then you will tend to"
+            +"\nnotice others’ bodies and skills, will quickly recall sports-related experiences, and will welcome"
+            +"\ninformation that is consistent with your self-schema as an athlete (Kihlstrom & Cantor,"
+            +"\n1984). Because birthdays are within self-schemas, if your friend’s birthday is close to yours,"
+            +"\nyou’ll be more likely to remember it (Kesebir & Oishi, 2010). The self-schemas that make"
+            +"\nup our self-concepts help us organize and retrieve our experiences."            
+            +"\n\nquoteList = [\"The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds.\"]" },
+            { role: 'user', content: quoteKeyPhrasesPrompt },
+          ],
+        });
+      const answer = response.choices[0].message.content;
+
+      return new CodeResponse(
+        Result.SUCCESS,
+        "성공적으로 quoteList를 받아왔습니다.",
+        answer
+      );
+    } catch (error) {
+      return new CodeResponse(
+        Result.ERROR,
+        "quoteList를 받아오는 과정에서 에러가 발생했습니다.",
+        error
+      );
+    }
   }
 
   getQuestion(prompt: string): CodeResponse {
-    return new CodeResponse(Result.SUCCESS, "", "");
+    require('dotenv').config();
+    const OpenAIApi = require('openai');
+
+    const openai = new OpenAIApi({
+        api_key: 'process.env.OPENAI_API_KEY'
+    });
+      
+    try {
+      const response = openai.chat.completions.create({  // const response = await openai.chat.completions.create
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: "You are an expert teacher who extracts keywords from given sentences. User will require you to quote sentences from a raw text."
+            +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form of object list.\nkeywordList length MUST match the length of quoteList."
+            +"\n\n###For Example###"            
+            +"\n\nquoteList = [\"The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds.\"]"
+            +"\n\nkeywordList = [{keyword1:\"medial prefrontal cortex\", keyword2:\"brain hemispheres\", keyword3=\"self\"}, {keyword1:\"self-concept\", keyword2:\"beliefs\", keyword3=\"self-schemas\"}, {keyword1:\"Schemas\", keyword2:\"mental\", keyword3=\"organize\"}]" },
+            { role: 'user', content: prompt },
+          ],
+        });
+      const answer = response.choices[0].message.content;
+
+      return new CodeResponse(
+        Result.SUCCESS,
+        "성공적으로 keywordList를 받아왔습니다.",
+        answer
+      );
+    } catch (error) {
+      return new CodeResponse(
+        Result.ERROR,
+        "keywordList를 받아오는 과정에서 에러가 발생했습니다.",
+        error
+      );
+    }
   }
 }
