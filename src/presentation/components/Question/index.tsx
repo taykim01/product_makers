@@ -3,6 +3,7 @@ import "@/presentation/components/components.css"
 import React, { useState } from "react"
 import { blank } from "@/app/types"
 
+// onChange, question, answer[], type, questionTitle, onClick, placeholder? prop로 필요
 export default function Question(props: any) {
     
     const [isVisible, setIsVisible] = useState(true);
@@ -10,10 +11,6 @@ export default function Question(props: any) {
     const handleChange = (e: any) => {
         const value = e.target.value
         props.onChange(value)
-    }
-
-    const hideElement = () => {
-        setIsVisible(false)
     }
 
     const splittedQuestion = props.question.split(blank);
@@ -46,8 +43,8 @@ export default function Question(props: any) {
                         <span style={{whiteSpace: 'pre'}} className="question_text">{props.question}</span>
                         <div>
                             <div className="hf gap8">
-                                <button className="question_button">빈칸 옮기기</button>
-                                <button className="question_button" onClick={hideElement}>삭제하기<img src="../../assets/image/delete_icon.webp" alt= "delete" className="delete_icon"/></button>
+                                <button className="question_button" onClick={props.onClick}>빈칸 옮기기</button>
+                                <button className="question_button" onClick={props.onDelete}>삭제하기<img src="../../assets/image/delete_icon.webp" alt= "delete" className="delete_icon"/></button>
                             </div>
                         </div>
                     </div>
