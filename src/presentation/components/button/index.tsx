@@ -1,9 +1,5 @@
-import "@/presentation/assets/style/Alignment.css"
 import "@/presentation/assets/style/Button.css"
-import "@/presentation/assets/style/Color.css"
 import "@/presentation/assets/style/Global.css"
-import "@/presentation/assets/style/Padding.css"
-import "@/presentation/assets/style/Typography.css"
 
 export default function Button(props: any) {
     switch (props.type) {

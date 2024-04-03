@@ -2,9 +2,9 @@ import "./question_list.css"
 import React, { useState, useEffect } from "react"
 
 import CheckUserResultUseCase from "@/domain/use_case/check_user_result_use_case"
-import Question from "@/presentation/components/Question"
+import Question from "@/presentation/components/question"
 import FixedButton from "@/presentation/components/fixed_button"
-import Header from "@/presentation/components/Header"
+import Header from "@/presentation/components/header"
 
 // props로 questionList, quoteList 필요
 export default function QuestionListComponent({ questionList, quoteList }: { questionList: string[], quoteList: string[] }) {

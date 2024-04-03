@@ -2,9 +2,8 @@
 
 import "@/app/pages.css"
 import Header from "@/presentation/components/header/index"
-import SampleQuestion from "@/presentation/components/sample_question"
 import FixedButton from "@/presentation/components/fixed_button"
-import sampleQuestionsData from "./sample_questions_data"
+import { sampleQuestion } from "./data";
 
 export default function IndexScreen() {
 
@@ -12,11 +11,11 @@ export default function IndexScreen() {
 
     }
 
-    const sampleQuestions = sampleQuestionsData.map(sampleQuestion => {
+    const sampleQuestions = sampleQuestion.map(question => {
         return <SampleQuestion
-                    title={sampleQuestion.title}
-                    date={sampleQuestion.date}
-                    text={sampleQuestion.text}
+                    title={question.title}
+                    date={question.date}
+                    text={question.text}
                 />
     })
 
