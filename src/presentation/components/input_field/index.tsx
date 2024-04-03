@@ -1,9 +1,10 @@
-import "../../assets/style/Alignment.css"
-import "../../assets/style/Button.css"
-import "../../assets/style/Color.css"
-import "../../assets/style/Global.css"
-import "../../assets/style/Padding.css"
-import "../../assets/style/Typography.css"
+import "@/presentation/assets/style/Alignment.css"
+import "@/presentation/assets/style/Button.css"
+import "@/presentation/assets/style/Color.css"
+import "@/presentation/assets/style/Global.css"
+import "@/presentation/assets/style/Padding.css"
+import "@/presentation/assets/style/Typography.css"
+import Button from "@/presentation/components/button"
 
 export default function InputField(props: any) {
     switch (props.type) {
@@ -52,7 +53,7 @@ export default function InputField(props: any) {
                                 className="input gs900 w100"
                                 name={props.name}
                                 placeholder={props.placeholder}/>
-                            <button className="mini-fill fc">추가</button>
+                            <Button className="mini-fill fc" onClick={props.onClick}>추가</Button>
                         </div>
                         <p className="descr gs700 fw700">{props.description}</p>
                     </div>
@@ -67,9 +68,9 @@ export default function InputField(props: any) {
                     </div>
                     <div className="input-container">
                         <div className="buttons fc gap8">
-                            <button className="btn btn-choose gs900 fw400">1개</button>
-                            <button className="btn btn-choose gs900 fw400">2개</button>
-                            <button className="btn btn-choose gs900 fw400">3개</button>
+                            <Button className="btn btn-choose gs900 fw400" onClick={props.onClick}>1개</Button>
+                            <Button className="btn btn-choose gs900 fw400" onClick={props.onClick}>2개</Button>
+                            <Button className="btn btn-choose gs900 fw400" onClick={props.onClick}>3개</Button>
                         </div>
                     </div>
                 </div>
