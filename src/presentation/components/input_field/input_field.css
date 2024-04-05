@@ -1,0 +1,51 @@
+@import url("../../assets/style/Global.css");
+
+.input {
+  display: flex;
+  padding: 16px 8px;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: var(--gray-50);
+  border: none;
+  height: 56px;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.input-selected {
+  background-color: var(--brand-100);
+}
+
+.input-large {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: var(--white);
+}
+
+.input-file {
+  display: flex;
+  width: 100%;
+  padding: 40px 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: var(--white);
+}

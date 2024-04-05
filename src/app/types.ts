@@ -20,4 +20,7 @@ export type ResultCode = {
   message: string;
 };
 
-export const blank: string = "[     ]";
+export type IconProps = "trash" | "correct" | "wrong" | "back";
+export type ButtonProps = "main" | "sub" | "mini"
+export type InputFieldProps = "text" | "textarea" | "file" | "select" | "add"
+export type QuestionTypeProps = "result" | "suggested" | "response"

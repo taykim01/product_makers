@@ -1,0 +1,20 @@
+@import url("../../assets/style/Global.css");
+
+.result {
+  display: flex;
+  flex: 1 0 0;
+  padding: 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.result-correct {
+  background-color: var(--dullblue-100);
+  color: var(--dullblue-500);
+}
+
+.result-wrong {
+  background-color: var(--brand-100);
+  color: var(--brand-500);
+}

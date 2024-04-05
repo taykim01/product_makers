@@ -1,70 +1,46 @@
-import "@/presentation/components/components.css"
+import { QuestionTypeProps } from "@/app/types";
+import "./question.css"
+import Button from "../button";
+import Icon from "@/presentation/assets/image/icon";
+import { blank } from "@/app/data";
 
-import React, { useState } from "react"
-import { blank } from "@/app/types"
+export default function Question(
+    { type, question, answer, onClick, subOnClick, index, toParent }
+        : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, subOnClick?: () => void, toParent?: (value: string) => void }
+) {
 
-// onChange, question, answer[], type, questionTitle, onClick, placeholder? prop로 필요
-export default function Question(props: any) {
-    
-    const [isVisible, setIsVisible] = useState(true);
-
-    const handleChange = (e: any) => {
-        const value = e.target.value
-        props.onChange(value)
+    function StyledQuestion({ text, answer }: { text: string, answer: string}) {
+        const before = text.split(answer)[0];
+        const after = text.split(answer)[1];
+        console.log(before)
+        return (
+            <div>{before}<span className="sb16 brand-600">{answer}</span>{after}</div>
+        );
     }
 
-    const splittedQuestion = props.question.split(blank);
-
-    const highlightedQuote = splittedQuestion.map((part:any, index:any) => (
-        <React.Fragment key={index}>
-            {part}
-            {index < splittedQuestion.length - 1 && (
-            <span className="text-highlight">{props.answer[index]}</span>
-            )}
-        </React.Fragment>
-        ))
-
-
-    switch (props.type) {
-        case "result":
-            return (
-                <div className="component_question_container">
-                    <div className="question_title_text">{props.questionTitle}.</div>
-                    <div className="question_text_alt">
-                    다음 () 안에 들어갈 단어로 적절한 것은? <br></br> {highlightedQuote}
-                    </div>
+    return (
+        <div className="vf gap16">
+            <div className="vf gap8">
+                <div className="m16 gray-600">질문 {index}</div>
+                <div className="r16 brand-900">
+                    {(type === "response" || type === "suggested") && question.replace(answer, blank)}
+                    {type === "result" && <StyledQuestion text={question} answer={answer} />}
                 </div>
-            )
-        case "suggested":
-            return (
-                isVisible && (
-                    <div className="component_question_container">
-                        <div className="question_title_text">{props.questionTitle}.</div>
-                        <span style={{whiteSpace: 'pre'}} className="question_text">{props.question}</span>
-                        <div>
-                            <div className="hf gap8">
-                                <button className="question_button" onClick={props.onClick}>빈칸 옮기기</button>
-                                <button className="question_button" onClick={props.onDelete}>삭제하기<img src="../../assets/image/delete_icon.webp" alt= "delete" className="delete_icon"/></button>
-                            </div>
-                        </div>
-                    </div>
-                )
-            )
-        case "response":
-            return (
-                <div className="component_question_container">
-                    <div className="question_title_text">{props.questionTitle}.</div>
-                    <span style={{whiteSpace: 'pre'}} className="question_text">{props.question}</span>
-                    <input
+            </div>
+            {
+                type === "response" && toParent
+                    ? <input
+                        className="question-input r16 gray-900"
                         type="text"
-                        name="userAnswer"
-                        className="question_inputfield"
-                        placeholder={props.placeholder || ""}
-                        onChange={handleChange}
-                        defaultValue=""
+                        placeholder="정답을 입력하세요"
+                        onChange={(e) => toParent(e.target.value)}
                     />
-                </div>
-            )
-        default:
-    }
+                    : type === "suggested" &&
+                    <div className="hf gap4">
+                        <Button type="mini" text="빈칸 옮기기" onClick={subOnClick} />
+                        <Button type="mini" text="삭제하기" icon={<Icon type="trash" />} onClick={onClick} />
+                    </div>
+            }
+        </div>
+    )
 }

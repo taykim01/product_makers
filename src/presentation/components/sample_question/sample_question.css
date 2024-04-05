@@ -1,0 +1,21 @@
+@import url("../../assets/style/Global.css");
+
+.sq-tag {
+  display: flex;
+  padding: 2px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--brand-100);
+}
+
+.sq-container {
+  display: flex;
+  padding: 20px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  background: var(--white);
+}

@@ -1,20 +1,26 @@
-import "@/presentation/assets/style/Alignment.css"
-import "@/presentation/assets/style/Button.css"
-import "@/presentation/assets/style/Color.css"
-import "@/presentation/assets/style/Global.css"
-import "@/presentation/assets/style/Padding.css"
-import "@/presentation/assets/style/Typography.css"
-import Button from "@/presentation/components/button"
+import Button from "../button";
+import "./fixed_button.css";
 
-export default function FixedButton(props: any) {
+export default function FixedButton(
+    { color, text, onClick, disabled, subButtonText, subButtonOnClick}: 
+    { color: "white" | "gray", text: string, onClick: () => void, disabled: boolean, subButtonText?: string, subButtonOnClick?: () => void}
+    ) {
     return (
-        props.button === "single"
-        ? <div className={`${props.button} grad-${props.background}}`}>
-            <Button className={`btn ${props.type} fw700`} onClick={props.onClick}>{props.text}</Button>
-        </div>
-        : <div className={`${props.button} grad-${props.background}}`}>
-            <Button className={`btn ${props.type1} fw700`} onClick={props.onClick}>{props.text1}</Button>
-            <Button className={`btn ${props.type2} fw700`} onClick={props.onClick}>{props.text2}</Button>
+        <div className={`fb-container fb-${color} hf gap8`}>
+            {
+                subButtonText &&
+                <Button
+                    type="sub"
+                    text={subButtonText}
+                    onClick={subButtonOnClick}
+                />
+            }
+            <Button
+                type="main"
+                text={text}
+                onClick={onClick}
+                disabled={disabled}
+            />
         </div>
     )
 }

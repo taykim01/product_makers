@@ -1,0 +1,12 @@
+@import url("../../assets/style/Global.css");
+
+.question-input {
+  height: 48px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: var(--gray-50);
+  border: none;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,55 @@
+@import url("../../assets/style/Global.css");
+
+button {
+  border: none;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  padding: 12px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.95);
+  user-select: none;
+  transition: transform 0.1s;
+}
+
+.button-main {
+  border-radius: 12px;
+  background: var(--brand-500);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  flex: 1 0 0;
+}
+
+.button-sub {
+  border-radius: 12px;
+  border: 1px solid var(--brand-500);
+  background-color: var(--white);
+  color: var(--brand-500);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  flex: 1 0 0;
+
+}
+
+.button-mini {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--brand-500);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.button-main:disabled {
+  background: var(--brand-300);
+}

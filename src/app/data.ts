@@ -64,4 +64,6 @@ const userQuestionList = [
     },
 ]
 
-export { sampleQuestion, userQuestionList };
+const blank = "[ __________ ]";
+
+export { sampleQuestion, userQuestionList, blank };

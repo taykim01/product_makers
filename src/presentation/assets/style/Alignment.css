@@ -7,6 +7,10 @@
   flex-shrink: 0;
 }
 
+.ase {
+  align-self: flex-end;
+}
+
 .pa {
   position: absolute;
 }

@@ -1,97 +1,112 @@
-import "@/presentation/assets/style/Alignment.css"
-import "@/presentation/assets/style/Button.css"
-import "@/presentation/assets/style/Color.css"
-import "@/presentation/assets/style/Global.css"
-import "@/presentation/assets/style/Padding.css"
-import "@/presentation/assets/style/Typography.css"
-import Button from "@/presentation/components/button"
+"use client"
+import { InputFieldProps } from "@/app/types";
+import "./input_field.css"
+import { useState } from "react";
+import Button from "../button";
 
-export default function InputField(props: any) {
-    switch (props.type) {
-        case "text":
+export default function InputField(
+    { type, placeholder, title, required, toParent }:
+        { type: InputFieldProps, placeholder?: string, title: string, required: boolean, toParent?: (value: string[] | number) => void }
+) {
+    const [selectedWords, setSelectedWords] = useState<string[]>([])
+    const [input, setInput] = useState<string>("")
+    const [selected, setSelected] = useState<number>(0)
+
+    const handleAdd = () => {
+        if (input === "") return
+        setSelectedWords([...selectedWords, input])
+        setInput("")
+        toParent && toParent(selectedWords)
+    }
+
+    const handleChange = (e: any) => {
+        switch (type) {
+            case "select":
+                toParent && toParent(e)
+                setSelected(e)
+            case "file":
+                setInput(e.target.files[0].name)
+                toParent && toParent(e.target.files[0])
+            default:
+                setInput(e.target.value)
+                toParent && toParent(e.target.value)
+
+        }
+    }
+
+    switch (type) {
+        case "textarea":
             return (
-                props.required === "true"
-                ? <div>
-                    <div className="hf gap4">
-                        <h5 className="h5 txt gs600">{props.title}</h5>
-                        <h5 className="h5 txt red500">*</h5>
-                    </div>
-                    <div className="input-container">
+                <textarea
+                    className="input-large r16 gray-700"
+                    placeholder={placeholder}
+                    onChange={handleChange}
+                    value={input}
+                />
+            )
+        case "file":
+            return (
+                <label htmlFor="file">
+                    <div className="input-file">
+                        {
+                            input
+                            ? <div className="r16 gray-700">{input}</div>
+                            : <div className="b26 gray-700">이미지, PDF를 올리거나,<br />텍스트를 붙여넣어주세요!</div>
+                        }
                         <input
-                            type="text"
-                            className="input gs900 w100"
-                            name={props.name}
-                            placeholder={props.placeholder}
+                            id="file"
+                            type="file"
+                            style={{ display: "none" }}
+                            className="input-large r16 gray-700"
+                            placeholder={placeholder}
+                            onChange={handleChange}
+                            value={input}
                         />
                     </div>
-                </div>
-                : <div>
-                    <div className="hf">
-                        <h5 className="h5 txt gs600">{props.title}</h5>
-                    </div>
-                    <div className="input-container">
-                        <input
-                            type="text"
-                            className="input gs900 w100"
-                            name={props.name}
-                            placeholder={props.placeholder}
-                        />
-                        <p className="descr gs500 fx400">{props.description}</p>
-                    </div>
-                </div>
+                </label>
             )
-        case "add":
-            return (
-                <div>
-                    <div className="hf">
-                        <h5 className="h5 txt gs600">{props.title}</h5>
-                    </div>
-                    <div className="input-container">
-                        <div className="input-and-button fc gap8">
-                            <input
-                                type="text"
-                                className="input gs900 w100"
-                                name={props.name}
-                                placeholder={props.placeholder}/>
-                            <Button className="mini-fill fc" onClick={props.onClick}>추가</Button>
-                        </div>
-                        <p className="descr gs700 fw700">{props.description}</p>
-                    </div>
-                </div>
-            )
-        case "select":
-            return (
-                <div>
-                    <div className="hf">
-                        <h5 className="h5 txt gs600">{props.title}</h5>
-                        <h5 className="h5 txt red500">*</h5>
-                    </div>
-                    <div className="input-container">
-                        <div className="buttons fc gap8">
-                            <Button className="btn btn-choose gs900 fw400" onClick={props.onClick}>1개</Button>
-                            <Button className="btn btn-choose gs900 fw400" onClick={props.onClick}>2개</Button>
-                            <Button className="btn btn-choose gs900 fw400" onClick={props.onClick}>3개</Button>
-                        </div>
-                    </div>
-                </div>
-            )
-        //case "file":
-        //case "textarea":
         default:
             return (
-                <div>
-                    <div className="hf">
-                        <h5 className="h5 txt gs600">{props.title}</h5>
+                <div className="vf gap8">
+                    <div className="hf gap4">
+                        <div className="sb16 gray-600">{title}</div>
+                        {required && <div className="16SB red-500">*</div>}
                     </div>
-                    <div className="input-container">
-                        <input
-                            type="text"
-                            className="input gs900 w100"
-                            name={props.name}
-                            placeholder={props.placeholder}
-                        />
+                    <div className="vf gap4 w100">
+                        {type === "select" ? (
+                            <div className="hf gap8">
+                                {[1, 2, 3].map((num) => (
+                                    <div
+                                        key={num}
+                                        onClick={() => handleChange(num)}
+                                        className={`input cj r16 gray-900 ${selected === num ? "input-selected" : ""}`}
+                                    >
+                                        {num}개
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="hf gap8">
+                                <input
+                                    type="text"
+                                    className="input r16 gray-900"
+                                    onChange={handleChange}
+                                    value={input}
+                                />
+                                {
+                                    type === "add" && (
+                                        <Button type="main" text="추가" onClick={handleAdd} />
+                                    )
+                                }
+                            </div>
+                        )}
+                        {type === "add" ? (
+                            <div className="b12 gray-700">{selectedWords.join(", ")}</div>
+                        ) : (
+                            <div className="r12 gray-500">{placeholder}</div>
+                        )}
                     </div>
                 </div>
-            )
+            );
     }
 }

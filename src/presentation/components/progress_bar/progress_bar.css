@@ -1,0 +1,15 @@
+@import url("../../assets/style/Global.css");
+
+.pb-color {
+  flex: 1 0 0;
+  height: 4px;
+  background-color: var(--brand-400);
+  border-radius: 9999px;
+}
+
+.pb-gray {
+  flex: 1 0 0;
+  height: 4px;
+  background-color: var(--gray-200);
+  border-radius: 9999px;
+}

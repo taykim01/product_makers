@@ -1,13 +1,14 @@
 "use client"
 
 import "./segmented_control.css";
-import "../../assets/styles/Global.css"
 import { useEffect, useRef, useState } from "react";
 
-export default function SegmentedControl(props: any) {
+export default function SegmentedControl(
+    {defaultIndex, contents, onSelect}
+    :{defaultIndex?: number, contents: string[], onSelect: (id: number) => void}
+    ) {
 
-    const [idx, setIdx] = useState(props.defaultIndex || 0)
-    const labels = props.contents;
+    const [idx, setIdx] = useState(defaultIndex || 0)
     const indicatorRef = useRef<HTMLDivElement | null>(null);
     const [xLocation, setXLocation] = useState(0)
     const [indicatorLength, setIndicatorLength] = useState(0)
@@ -15,7 +16,7 @@ export default function SegmentedControl(props: any) {
     const handleClick = (id: number) => {
         setIdx(id);
         setXLocation((id * indicatorLength) + 4)
-        props.onSelect(id);
+        onSelect(id);
     }
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export default function SegmentedControl(props: any) {
     return (
         <div className="sc_container">
             {
-                labels.map(
+                contents.map(
                     (content: string, id: number) => (
                         <div
                             key={content}
@@ -43,7 +44,7 @@ export default function SegmentedControl(props: any) {
                 ref={indicatorRef}
                 className="sc_indicator"
                 style={{
-                    width: `calc((100% - 8px)/${labels.length})`,
+                    width: `calc((100% - 8px)/${contents.length})`,
                     left: xLocation
                 }}
             />
