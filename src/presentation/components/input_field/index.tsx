@@ -62,7 +62,6 @@ export default function InputField(
                             className="input-large r16 gray-700"
                             placeholder={placeholder}
                             onChange={handleChange}
-                            value={input}
                         />
                     </div>
                 </label>

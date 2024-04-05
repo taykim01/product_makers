@@ -62,7 +62,6 @@ export default function Home() {
               <div className="pb32" style={{ transform: "scale(2)" }}>
                 <div className="loader" />
               </div>
-
               <Button
                 type="main"
                 text="나도 사용하기"

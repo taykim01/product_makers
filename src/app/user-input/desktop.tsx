@@ -1,5 +1,6 @@
 "use client"
 
+import ReadFileUseCase from "@/domain/use_case/read_file_use_case"
 import "../page.css"
 import Button from "@/presentation/components/button"
 import Header from "@/presentation/components/header"
@@ -8,12 +9,15 @@ import ProgressBar from "@/presentation/components/progress_bar"
 import SegmentedControl from "@/presentation/components/segmented_control"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Result } from "../types"
+import LoadingDialogue from "@/presentation/components/loading_dialogue"
 
 export default function Desktop() {
     const router = useRouter()
     const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(1)
     const [rawText, setRawText] = useState("")
-    const [file, setFile] = useState<File | null>(null)
+    const [loading, setLoading] = useState(false)
+    const [file, setFile] = useState<any>()
     const [textOrFile, setTextOrFile] = useState<number>(0)
     const [userSettings, setUserSettings] = useState({
         blankCount: 0,
@@ -24,14 +28,26 @@ export default function Desktop() {
     })
     const titles = ["교재나 시험 내용을 입력해주세요", "내용을 확인해주세요", "필수 정보를 입력해주세요"]
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (step < 4) {
             setStep((prevStep) => {
                 if (prevStep >= 4) return prevStep;
                 return prevStep + 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
-        if (step === 3) router.push("/question-list")
+        if (step === 1) {
+            setLoading(true)
+            const read_file_use_case = new ReadFileUseCase()
+            const response = await read_file_use_case.readFile(file)
+            if (response.result === Result.SUCCESS) {
+                setRawText(response.payload)
+                setLoading(false)
+            }
+            else {
+                alert(response.message)
+                setLoading(false)
+            }
+        } else if (step === 3) router.push("/question-list")
     }
 
     const getDisabled = () => {
@@ -155,6 +171,7 @@ export default function Desktop() {
                     </div>
                 }
             </div>
+            {loading && <LoadingDialogue />}
         </main>
     )
 }

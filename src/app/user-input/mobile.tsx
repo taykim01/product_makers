@@ -1,5 +1,6 @@
 "use client"
 
+import ReadFileUseCase from "@/domain/use_case/read_file_use_case"
 import FixedButton from "@/presentation/components/fixed_button"
 import Header from "@/presentation/components/header"
 import InputField from "@/presentation/components/input_field"
@@ -28,7 +29,11 @@ export default function Mobile() {
                 return prevStep + 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
-        if (step === 3) router.push("/question-list")
+        if (step === 1) {
+            const read_file_use_case = new ReadFileUseCase()
+            const response = read_file_use_case.readFile(file)
+            console.log(response)
+        } else if (step === 3) router.push("/question-list")
     }
 
     const goBack = () => {
