@@ -4,9 +4,9 @@ import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { sampleResult } from "../data"
-import Question from "@/presentation/components/question/index"
 import Score from "@/presentation/components/score"
 import Button from "@/presentation/components/button"
+import QuestionItem from "@/presentation/components/question_item"
 
 export default function Desktop() {
     const router = useRouter()
@@ -46,7 +46,7 @@ export default function Desktop() {
                 </div>
                 <div className="vf gap32" style={{ height: "100%", overflow: "scroll" }}>
                     {questionList.map((question, index) => (
-                        <Question
+                        <QuestionItem
                             key={index}
                             index={index + 1}
                             type="result"

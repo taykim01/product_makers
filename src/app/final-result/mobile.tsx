@@ -5,8 +5,8 @@ import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { sampleResult } from "../data"
-import Question from "@/presentation/components/question/index"
 import Score from "@/presentation/components/score"
+import QuestionItem from "@/presentation/components/question_item"
 
 export default function Mobile() {
     const router = useRouter()
@@ -42,7 +42,7 @@ export default function Mobile() {
                 />
                 <div className="vf gap32" style={{ paddingBottom: 100 }}>
                     {questionList.map((question, index) => (
-                        <Question
+                        <QuestionItem
                             key={index}
                             index={index + 1}
                             type="result"

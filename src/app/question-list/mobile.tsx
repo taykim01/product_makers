@@ -5,7 +5,7 @@ import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { sampleQuestion } from "../data"
-import Question from "@/presentation/components/question/index"
+import QuestionItem from "@/presentation/components/question_item"
 
 export default function Mobile() {
     const router = useRouter()
@@ -61,7 +61,7 @@ export default function Mobile() {
                     <div className="gray-900 b24">문제를 확인해주세요</div>
                     <div className="vf gap32" style={{ paddingBottom: 100 }}>
                         {questionList.map((question, index) => (
-                            <Question
+                            <QuestionItem
                                 key={index}
                                 index={index}
                                 type="suggested"
@@ -83,7 +83,7 @@ export default function Mobile() {
                     </div>
                     <div className="vf gap32" style={{ paddingBottom: 100 }}>
                         {questionList.map((question, index) => (
-                            <Question
+                            <QuestionItem
                                 key={index}
                                 index={index + 1}
                                 type="response"

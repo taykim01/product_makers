@@ -1,11 +1,11 @@
 import { QuestionTypeProps } from "@/app/types";
-import "./question.css"
+import "./question_item.css"
 import Button from "../button";
 import Icon from "@/presentation/assets/image/icon";
 import { blank } from "@/app/data";
 import Result from "../result";
 
-export default function Question(
+export default function QuestionItem(
     { type, question, answer, onClick, subOnClick, index, toParent, userAnswer }
         : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, subOnClick?: () => void, toParent?: (value: string) => void, userAnswer?: string}
 ) {
