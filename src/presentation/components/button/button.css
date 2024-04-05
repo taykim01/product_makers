@@ -26,8 +26,15 @@ button:active {
   font-size: 14px;
   font-weight: 700;
   line-height: 24px;
-  flex: 1 0 0;
   min-width: 80px;
+  flex: 1 0 0;
+}
+
+@media screen and (min-width: 393px){
+  .button-main {
+    padding: 12px 48px;
+    flex: 0;
+  }
 }
 
 .button-sub {

@@ -9,6 +9,7 @@
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
 }
 
 .header-mobile {
@@ -21,7 +22,7 @@
 }
 
 .header-desktop {
-  height: 108px;
+  min-height: 108px;
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(5px);

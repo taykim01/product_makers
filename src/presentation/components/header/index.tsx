@@ -17,9 +17,8 @@ export default function Header(
     switch (responsive.responsive) {
         case Device.desktop:
             return (
-                <div className={`header-desktop header`}>
+                <div className={`header-desktop header header-${color}`}>
                     <div>로고</div>
-                    <div><Button type="sub" text="메인화면으로" onClick={() => router.push("/")} /></div>
                 </div>
             )
 
