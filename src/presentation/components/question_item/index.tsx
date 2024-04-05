@@ -3,7 +3,7 @@ import "./question_item.css"
 import Button from "../button";
 import Icon from "@/presentation/assets/image/icon";
 import { blank } from "@/app/data";
-import Result from "../result";
+import Result from "@/presentation/components/result";
 
 export default function QuestionItem(
     { type, question, answer, onClick, subOnClick, index, toParent, userAnswer }
