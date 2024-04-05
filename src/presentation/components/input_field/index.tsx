@@ -1,36 +1,38 @@
 "use client"
 import { InputFieldProps } from "@/app/types";
 import "./input_field.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button";
 
 export default function InputField(
-    { type, placeholder, title, required, toParent }:
-        { type: InputFieldProps, placeholder?: string, title: string, required: boolean, toParent?: (value: string[] | number) => void }
+    { type, placeholder, title, required, toParent, value }:
+        { type: InputFieldProps, placeholder?: string, title?: string, required: boolean, toParent?: (value: string | string[] | number) => void, value?: string }
 ) {
     const [selectedWords, setSelectedWords] = useState<string[]>([])
-    const [input, setInput] = useState<string>("")
+    const [input, setInput] = useState<string>(value || "")
     const [selected, setSelected] = useState<number>(0)
+
+    useEffect(() => {
+        setInput(value || "")
+    }, [])
 
     const handleAdd = () => {
         if (input === "") return
+        toParent && toParent([...selectedWords, input])
         setSelectedWords([...selectedWords, input])
         setInput("")
-        toParent && toParent(selectedWords)
     }
 
     const handleChange = (e: any) => {
-        switch (type) {
-            case "select":
-                toParent && toParent(e)
-                setSelected(e)
-            case "file":
-                setInput(e.target.files[0].name)
-                toParent && toParent(e.target.files[0])
-            default:
-                setInput(e.target.value)
-                toParent && toParent(e.target.value)
-
+        if (type === "select") {
+            if (toParent) toParent(e);
+            setSelected(e);
+        } else if (type === "file") {
+            setInput(e.target.files[0].name);
+            if (toParent) toParent(e.target.files[0]);
+        } else {
+            setInput(e.target.value);
+            if (toParent) toParent(e.target.value);
         }
     }
 
@@ -50,8 +52,8 @@ export default function InputField(
                     <div className="input-file">
                         {
                             input
-                            ? <div className="r16 gray-700">{input}</div>
-                            : <div className="b26 gray-700">이미지, PDF를 올리거나,<br />텍스트를 붙여넣어주세요!</div>
+                                ? <div className="r16 gray-700">{input}</div>
+                                : <div className="b26 gray-700">이미지, PDF를 올리거나,<br />텍스트를 붙여넣어주세요!</div>
                         }
                         <input
                             id="file"
@@ -87,12 +89,24 @@ export default function InputField(
                             </div>
                         ) : (
                             <div className="hf gap8">
-                                <input
-                                    type="text"
-                                    className="input r16 gray-900"
-                                    onChange={handleChange}
-                                    value={input}
-                                />
+                                {
+                                    type === "hashtag"
+                                        ? <div className="input hf gap8 r16 gray-900 ca pr">
+                                            <div>#</div>
+                                            <input
+                                                type="text"
+                                                className="input-hashtag"
+                                                onChange={handleChange}
+                                                value={input}
+                                            />
+                                        </div>
+                                        : <input
+                                            type={type === "number" ? "number" : "text"}
+                                            className="input r16 gray-900"
+                                            onChange={handleChange}
+                                            value={input}
+                                        />
+                                }
                                 {
                                     type === "add" && (
                                         <Button type="main" text="추가" onClick={handleAdd} />

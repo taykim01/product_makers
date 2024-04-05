@@ -20,7 +20,9 @@ export type ResultCode = {
   message: string;
 };
 
+export type QuestionResult = "correct" | "wrong"
+
 export type IconProps = "trash" | "correct" | "wrong" | "back";
 export type ButtonProps = "main" | "sub" | "mini"
-export type InputFieldProps = "text" | "textarea" | "file" | "select" | "add"
+export type InputFieldProps = "text" | "textarea" | "file" | "select" | "add" | "hashtag" | "number"
 export type QuestionTypeProps = "result" | "suggested" | "response"

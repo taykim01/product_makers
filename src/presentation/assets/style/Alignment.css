@@ -3,6 +3,10 @@
   bottom: 0;
 }
 
+.bb {
+  box-sizing: border-box;
+}
+
 .f0 {
   flex-shrink: 0;
 }

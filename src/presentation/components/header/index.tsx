@@ -9,7 +9,7 @@ import Button from "../button";
 import { useRouter } from "next/navigation";
 
 export default function Header(
-    { onClick, type, state }: { onClick?: () => void, type: "default" | "progress" | "text", state?: 0 | 1 | 2 | 3 | 4 }
+    { onClick, type, state, color }: { onClick?: () => void, type: "default" | "progress" | "text", state?: 0 | 1 | 2 | 3 | 4 | 5, color: "white" | "gray"| "transparent" }
 ) {
     const responsive = useResponsive()
     const router = useRouter()
@@ -25,9 +25,9 @@ export default function Header(
 
         default:
             return (
-                <div className={`header-mobile header`}>
+                <div className={`header-mobile header header-${color}`}>
                     <div className="hf gap20 w100 ca">
-                        <Icon type="back" onClick={() => router.back()} />
+                        <Icon type="back" onClick={onClick} />
                         {
                             type === "progress"
                                 ? state && <ProgressBar state={state} />

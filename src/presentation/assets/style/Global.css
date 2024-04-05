@@ -15,8 +15,7 @@ body {
 
 main {
   height: fit-content;
-  width: 390px;
-  height: 100vh;
+  width: 393px;
   margin: 0 auto;
-  box-sizing: border-box;
+  box-sizing: border-box;;
 }

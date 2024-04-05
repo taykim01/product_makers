@@ -14,10 +14,42 @@
   outline: none;
   width: 100%;
   transition: all 0.3s;
+  font-family: PretendardVariable;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.input-hashtag {
+  position: absolute;
+  font-family: PretendardVariable;
+  font-size: 16px;
+  font-weight: 400;
+  top: 0;
+  background-color: transparent;
+  left: 16px;
+  display: flex;
+  padding: 16px 8px;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: none;
+  height: 56px;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+  transition: all 0.3s;
 }
 
 .input-selected {
   background-color: var(--brand-100);
+}
+
+textarea {
+  height: 100%;
+  font-family: PretendardVariable;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .input-large {
@@ -48,4 +80,7 @@
   outline: none;
   resize: none;
   background-color: var(--white);
+  font-family: PretendardVariable;
+  font-size: 16px;
+  font-weight: 400;
 }
