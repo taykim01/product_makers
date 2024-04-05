@@ -1,5 +1,5 @@
 import Icon from "@/presentation/assets/image/icon";
-import "./result.css";
+import "./result_item.css";
 
 export default function ResultItem({ result, userAnswer }: { result: "correct" | "wrong", userAnswer?: string }) {
     return (
