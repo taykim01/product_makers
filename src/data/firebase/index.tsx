@@ -1,13 +1,16 @@
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: "askme-4548d.firebaseapp.com",
-    projectId: "askme-4548d",
-    storageBucket: "askme-4548d.appspot.com",
-    messagingSenderId: "201975094781",
-    appId: "1:201975094781:web:99786af1aba5f945064d94"
+    authDomain: "kairos-3326d.firebaseapp.com",
+    projectId: "kairos-3326d",
+    storageBucket: "kairos-3326d.appspot.com",
+    messagingSenderId: "85411976801",
+    appId: "1:85411976801:web:556d7bf83b27b43e02bc20"
 };
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const db = getFirestore(app);
+
+export { db };
