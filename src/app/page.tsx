@@ -9,6 +9,7 @@ import { useResponsive } from "@/presentation/hooks/useResponsive";
 import { Device } from "./types";
 import Button from "@/presentation/components/button";
 import "@/app/page.css"
+import { db } from "@/data/firebase";
 
 export default function Home() {
   const router = useRouter()
