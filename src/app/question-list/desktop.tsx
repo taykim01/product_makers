@@ -4,8 +4,8 @@ import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { sampleQuestion } from "../data"
+import Question from "@/presentation/components/question/index"
 import Button from "@/presentation/components/button"
-import Question from "@/presentation/components/question"
 
 export default function Desktop() {
     const router = useRouter()

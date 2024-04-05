@@ -5,7 +5,7 @@ import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { sampleQuestion } from "../data"
-import Question from "@/presentation/components/question"
+import Question from "@/presentation/components/question/index"
 
 export default function Mobile() {
     const router = useRouter()

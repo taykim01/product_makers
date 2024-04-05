@@ -4,7 +4,7 @@ import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { sampleResult } from "../data"
-import Question from "@/presentation/components/question"
+import Question from "@/presentation/components/question/index"
 import Score from "@/presentation/components/score"
 import Button from "@/presentation/components/button"
 
