@@ -1,7 +1,7 @@
 import Icon from "@/presentation/assets/image/icon";
 import "./result.css";
 
-export default function Result({ result, userAnswer }: { result: "correct" | "wrong", userAnswer?: string }) {
+export default function ResultItem({ result, userAnswer }: { result: "correct" | "wrong", userAnswer?: string }) {
     return (
         <div className={`result result-${result}`}>
             <div className="hf gap8 ca">
