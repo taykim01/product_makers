@@ -1,5 +1,6 @@
 import CodeResponse from "@/app/code_response";
 import { Result } from "@/app/types";
+import OpenAIService from "@/data/service/open_ai_service";
 
 export default class ModifyQuestionUseCase {
   // PascalCase로 수정 필요!!
@@ -31,7 +32,7 @@ export default class ModifyQuestionUseCase {
     } else {
       return new CodeResponse(
         keyPhraseResponse.result,
-        keyPhraseResponse.errorcode,
+        keyPhraseResponse.errorCode,
         keyPhraseResponse.payload
       );
     }

@@ -1,5 +1,6 @@
 import CodeResponse from "@/app/code_response";
-import { Result, blank } from "@/app/types";
+import { blank } from "@/app/data";
+import { Result } from "@/app/types";
 
 export default class CheckUserResultUseCase {
   // 정답.오답 확인하는 메서드

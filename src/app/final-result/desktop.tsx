@@ -1,6 +1,5 @@
 "use client"
 
-import FixedButton from "@/presentation/components/fixed_button"
 import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useState } from "react"

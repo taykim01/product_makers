@@ -1,6 +1,8 @@
 import CodeResponse from "@/app/code_response";
 import { Result } from "@/app/types";
 import QuoteModel from "@/domain/model/quote_model";
+import { doc, collection, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default class QuoteRepository {
   async upload(quoteData: QuoteModel): Promise<CodeResponse> {
