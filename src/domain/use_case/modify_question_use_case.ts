@@ -5,11 +5,11 @@ import OpenAIService from "@/data/service/open_ai_service";
 export default class ModifyQuestionUseCase {
   // PascalCase로 수정 필요!!
 
-  recreateQuestion(
+  async recreateQuestion(
     rawText: string,
     questionNum: number,
     previousQuotes: string[]
-  ): CodeResponse {
+  ): Promise<CodeResponse> {
     const quoteKeyPhrasesPrompt: string =
       "Extract " +
       questionNum +
@@ -19,7 +19,7 @@ export default class ModifyQuestionUseCase {
     const quoteList: string[] = []; //quoteKeyPhrasesPrompt를 기반으로 openAI의 답변
 
     const open_ai_service = new OpenAIService();
-    const keyPhraseResponse = open_ai_service.getQuoteKeyPhrases(
+    const keyPhraseResponse = await open_ai_service.getQuoteKeyPhrases(
       quoteKeyPhrasesPrompt
     );
 
