@@ -13,7 +13,7 @@ export default function SampleQuestion(
                 <div className="m12 brand-600 sq-tag"># {hashtag || "없음"}</div>
                 <div className="r12 gray-500">{formatDate(createdAt)}</div>
             </div>
-            <div className="r14 gray-900">Q: {question.replace(answer, blank)}</div>
+            <div className="r14 gray-900">Q: {question}</div>
         </div>
     )
 }

@@ -6,29 +6,43 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { sampleQuestion } from "../data"
 import QuestionItem from "@/presentation/components/question_item"
+import UploadQuoteDataUseCase from "@/domain/use_case/upload_quote_data_use_case"
+import { applyInput } from "@/presentation/states/reducers/final_questions_slice"
+import { useAppDispatch, useAppSelector } from "@/presentation/states/store"
+import { Question, Result } from "../types"
 
 export default function Mobile() {
+    const dispatch = useAppDispatch()
     const router = useRouter()
     const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(4)
-    const [questionList, setQuestionList] = useState(sampleQuestion)
-    const [answerList, setAnswerList] = useState<string[]>([])
+    const [questionList, setQuestionList] = useState<Question[]>([])
+    const questionArray: Question[] = useAppSelector((state: any) => state.finalQuestions.questions)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const answerLength: string[] = []
         for (let index = 0; index < sampleQuestion.length; index++) {
             answerLength.push("")
         }
-        setAnswerList(answerLength)
+        if (questionArray.length > 0) setQuestionList(questionArray)
     }, [])
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (step < 5) {
             setStep((prevStep) => {
                 if (prevStep >= 5) return prevStep;
                 return prevStep + 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
-        if (step === 5) router.push("/final-result")
+        if (step === 4) {
+            setLoading(true)
+            const upload_quote_data_use_case = new UploadQuoteDataUseCase()
+            const response = await upload_quote_data_use_case.uploadQuoteData(questionList)
+            if (response.result === Result.SUCCESS || response.result === Result.ERROR) setLoading(false)
+        } else if (step === 5) {
+            dispatch(applyInput(questionList))
+            router.push("/final-result")
+        }
     }
 
     const goBack = () => {
@@ -40,21 +54,21 @@ export default function Mobile() {
         }
     }
 
-    const setAnswer = (value: string, index: number) => {
-        const newAnswerList = answerList.map((item, idx) => {
-            if (idx === index) {
-                return value;
+    const answerQuestion = (value: string, index: number) => {
+        const newQuestionList = questionList.map((question, i) => {
+            if (i === index) {
+                return {
+                    ...question,
+                    answer: value
+                }
             }
-            return item;
-        });
-        if (index >= answerList.length) {
-            newAnswerList.push(value);
-        }
-        setAnswerList(newAnswerList);
+            return question
+        })
+        setQuestionList(newQuestionList)
     }
 
     return (
-        <main className="vf" style={{ backgroundColor: "var(--white)", flexGrow: 1 }}>
+        <main className="vf" style={{ backgroundColor: "var(--white)", flexGrow: 1, paddingBottom: 120 }}>
             <Header type={step === 5 ? "default" : "progress"} color="white" state={step} onClick={goBack} />
             {
                 step === 4 && <div className="vf yp40 xp20 gap40 bb" style={{ height: "100vh" }}>
@@ -63,12 +77,11 @@ export default function Mobile() {
                         {questionList.map((question, index) => (
                             <QuestionItem
                                 key={index}
-                                index={index}
+                                index={index + 1}
                                 type="suggested"
                                 question={question.question}
                                 answer={question.answer}
-                                onClick={() => setQuestionList(questionList.filter((_, i) => i !== index))}
-                                subOnClick={() => { }}
+                                onClick={() => setQuestionList(questionList.filter((_, i) => i !== index))} // question 삭제
                             />
                         ))}
                     </div>
@@ -89,7 +102,7 @@ export default function Mobile() {
                                 type="response"
                                 question={question.question}
                                 answer={question.answer}
-                                toParent={(value) => setAnswer(value, index)}
+                                toParent={(value) => answerQuestion(value, index)}
                             />
                         ))}
                     </div>

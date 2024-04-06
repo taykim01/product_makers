@@ -1,18 +1,18 @@
 import { QuestionTypeProps } from "@/app/types";
-import "./question_item.css"
+import "./question.css"
 import Button from "../button";
 import Icon from "@/presentation/assets/image/icon";
 import { blank } from "@/app/data";
-import ResultItem from "../result_item";
+import Result from "../result";
 
-export default function QuestionItem(
+export default function Question(
     { type, question, answer, onClick, subOnClick, index, toParent, userAnswer }
         : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, subOnClick?: () => void, toParent?: (value: string) => void, userAnswer?: string}
 ) {
 
-    function StyledQuestion({ text }: { text: string }) {
-        const before = text.split(blank)[0];
-        const after = text.split(blank)[1];
+    function StyledQuestion({ text, answer }: { text: string, answer: string }) {
+        const before = text.split(answer)[0];
+        const after = text.split(answer)[1];
         return (
             <div>{before}<span className="sb16 brand-600">{answer}</span>{after}</div>
         );
@@ -23,8 +23,8 @@ export default function QuestionItem(
             <div className="vf gap8">
                 <div className="m16 gray-600">질문 {index}</div>
                 <div className="r16 brand-900">
-                    {(type === "response" || type === "suggested") && question}
-                    {type === "result" && <StyledQuestion text={question} />}
+                    {(type === "response" || type === "suggested") && question.replace(answer, blank)}
+                    {type === "result" && <StyledQuestion text={question} answer={answer} />}
                 </div>
             </div>
             {
@@ -39,12 +39,13 @@ export default function QuestionItem(
             {
                 type === "suggested" &&
                 <div className="hf gap4">
+                    <Button type="mini" text="빈칸 옮기기" onClick={subOnClick} />
                     <Button type="mini" text="삭제하기" icon={<Icon type="trash" />} onClick={onClick} />
                 </div>
             }
             {
                 type === "result" &&
-                <ResultItem
+                <Result
                     result={userAnswer === answer ? "correct" : "wrong"}
                     userAnswer={userAnswer}
                 />

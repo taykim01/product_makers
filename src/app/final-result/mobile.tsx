@@ -3,15 +3,21 @@
 import FixedButton from "@/presentation/components/fixed_button"
 import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { sampleResult } from "../data"
+import { useEffect, useState } from "react"
 import Score from "@/presentation/components/score"
 import QuestionItem from "@/presentation/components/question_item"
+import { useAppSelector } from "@/presentation/states/store"
+import { Question } from "../types"
 
 export default function Mobile() {
     const router = useRouter()
     const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(4)
-    const [questionList, setQuestionList] = useState(sampleResult)
+    const [questionList, setQuestionList] = useState<Question[]>([])
+    const questionArray: Question[] = useAppSelector((state: any) => state.finalQuestions.questions)
+
+    useEffect(() => {
+        if (questionArray.length > 0) setQuestionList(questionArray)
+    }, [])
 
     const goBack = () => {
         if (step < 4) {
@@ -20,15 +26,17 @@ export default function Mobile() {
                 return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
+        if (step === 4) setStep(3)
+        else if (step === 5) router.back()
     }
 
     const result = {
-        correct: questionList.filter((question) => question.userAnswer === question.answer).length,
-        wrong: questionList.filter((question) => question.userAnswer !== question.answer).length
+        correct: questionList.filter((question) => question.answer.trim() === question.keyword).length,
+        wrong: questionList.filter((question) => question.answer.trim() !== question.keyword).length
     }
 
     return (
-        <main className="vf" style={{ backgroundColor: "var(--white)", flexGrow: 1 }}>
+        <main className="vf" style={{ backgroundColor: "var(--white)", flexGrow: 1, paddingBottom: 120 }}>
             <Header type="text" color="white" onClick={goBack} />
 
             <div className="vf yp40 xp20 gap40 bb" style={{ height: "100vh" }}>
@@ -47,15 +55,15 @@ export default function Mobile() {
                             index={index + 1}
                             type="result"
                             question={question.question}
-                            answer={question.answer}
-                            userAnswer={question.userAnswer}
+                            answer={question.keyword}
+                            userAnswer={question.answer}
                         />
                     ))}
                 </div>
             </div>
             <FixedButton
-                onClick={() => router.push("/question-list")}
-                text="문제 다시 생성하기"
+                onClick={() => router.push("/")}
+                text="홈으로"
                 color="white"
                 disabled={false}
             />

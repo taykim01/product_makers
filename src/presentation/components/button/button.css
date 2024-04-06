@@ -11,6 +11,7 @@ button {
   gap: 8px;
   flex-shrink: 0;
   transition: transform 0.1s;
+  box-sizing: border-box;
 }
 
 button:active {
@@ -34,6 +35,7 @@ button:active {
   .button-main {
     padding: 12px 48px;
     flex: 0;
+    min-width: 86px;
   }
 }
 

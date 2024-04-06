@@ -66,7 +66,6 @@ export default function Desktop() {
             return question
         })
         setQuestionList(newQuestionList)
-        console.log(newQuestionList)
     }
 
     return (
@@ -83,7 +82,7 @@ export default function Desktop() {
                                 type="suggested"
                                 question={question.question}
                                 answer={question.answer}
-                                onClick={() => setQuestionList(questionList.filter((_, i) => i !== index))}
+                                onClick={() => setQuestionList(questionList.filter((_, i) => i !== index))} // question 삭제
                             />
                         ))}
                     </div>

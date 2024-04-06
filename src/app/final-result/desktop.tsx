@@ -3,7 +3,6 @@
 import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { sampleResult } from "../data"
 import Score from "@/presentation/components/score"
 import Button from "@/presentation/components/button"
 import QuestionItem from "@/presentation/components/question_item"

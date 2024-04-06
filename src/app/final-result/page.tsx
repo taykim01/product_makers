@@ -8,6 +8,7 @@ import ReduxProvider from "@/presentation/states/store"
 
 export default function Home() {
     const responsive = useResponsive()
+
     switch (responsive.responsive) {
         case Device.mobile:
             return (
