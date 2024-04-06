@@ -1,6 +1,6 @@
 import CodeResponse from "@/app/code_response";
 import { blank } from "@/app/data";
-import { Result } from "@/app/types";
+import { Question, Result } from "@/app/types";
 import OpenAIService from "@/data/service/open_ai_service";
 
 export default class CreateFillInTheBlankUseCase {
@@ -42,33 +42,28 @@ export default class CreateFillInTheBlankUseCase {
   ): Promise<CodeResponse> {
     const open_ai_service = new OpenAIService();
 
-    const finalQuestionList: {
-      hashtag: string;
-      createdAt: Date;
-      question: string;
-      answer: string;
-      userAnswer: string;
-    }[] = [];
+    const finalQuestionList: Question[] = [];
 
-    const getKeywordPrompt = `Get the single most important keyword from each of the following sentences: ${quoteList.join(
-      ", "
-    )}.
+    const getKeywordPrompt = `Get the single most important keyword from each of the following sentences: ${Array.isArray(quoteList) ? quoteList.join(", ") : quoteList}.
       \nInclude the following words, if possible: ${inclusion}.
       \nExclude the following words: ${exclusion}.
       \nReturn the result in the following format: [(keyword for sentence 1), (keyword for sentence 2), (keyword for sentence 3), etc].`;
     const getKeywordsResponse = await open_ai_service.getQuestion(
       getKeywordPrompt
     );
+    
+
     const keywordList = JSON.parse(getKeywordsResponse.payload)
+
     if (getKeywordsResponse.result === Result.SUCCESS) {
       for (let i = 0; i < quoteList.length; i++) {
-        const questionResult = quoteList[i].replace(getKeywordsResponse.payload[i], blank);
         finalQuestionList.push({
-          hashtag: "",
+          answer: "",
           createdAt: new Date(),
-          question: questionResult,
-          answer: keywordList[i],
-          userAnswer: "",
+          quote: quoteList[i],
+          keyword: keywordList[i],
+          question: quoteList[i].replace(keywordList[i], blank),
+          hashtag: "",
         });
       }
 

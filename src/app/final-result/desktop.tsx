@@ -2,16 +2,23 @@
 
 import Header from "@/presentation/components/header"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { sampleResult } from "../data"
 import Score from "@/presentation/components/score"
 import Button from "@/presentation/components/button"
 import QuestionItem from "@/presentation/components/question_item"
+import { useAppSelector } from "@/presentation/states/store"
+import { Question } from "../types"
 
 export default function Desktop() {
     const router = useRouter()
     const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(4)
-    const [questionList, setQuestionList] = useState(sampleResult)
+    const [questionList, setQuestionList] = useState<Question[]>([])
+    const questionArray: Question[] = useAppSelector((state: any) => state.finalQuestions.questions)
+
+    useEffect(() => {
+        if (questionArray.length > 0) setQuestionList(questionArray)
+    }, [])
 
     const goBack = () => {
         if (step < 4) {
@@ -23,8 +30,8 @@ export default function Desktop() {
     }
 
     const result = {
-        correct: questionList.filter((question) => question.userAnswer === question.answer).length,
-        wrong: questionList.filter((question) => question.userAnswer !== question.answer).length
+        correct: questionList.filter((question) => question.answer.trim() === question.keyword).length,
+        wrong: questionList.filter((question) => question.answer.trim() !== question.keyword).length
     }
 
     return (
@@ -51,8 +58,8 @@ export default function Desktop() {
                             index={index + 1}
                             type="result"
                             question={question.question}
-                            answer={question.answer}
-                            userAnswer={question.userAnswer}
+                            answer={question.keyword}
+                            userAnswer={question.answer}
                         />
                     ))}
                 </div>
@@ -60,7 +67,7 @@ export default function Desktop() {
                     <Button
                         type="main"
                         text="다음으로"
-                        onClick={() => { }}
+                        onClick={() => router.push("/")}
                         disabled={false}
                     />
                 </div>

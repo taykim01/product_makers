@@ -10,9 +10,9 @@ export default function QuestionItem(
         : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, subOnClick?: () => void, toParent?: (value: string) => void, userAnswer?: string}
 ) {
 
-    function StyledQuestion({ text, answer }: { text: string, answer: string }) {
-        const before = text.split(answer)[0];
-        const after = text.split(answer)[1];
+    function StyledQuestion({ text }: { text: string }) {
+        const before = text.split(blank)[0];
+        const after = text.split(blank)[1];
         return (
             <div>{before}<span className="sb16 brand-600">{answer}</span>{after}</div>
         );
@@ -23,8 +23,8 @@ export default function QuestionItem(
             <div className="vf gap8">
                 <div className="m16 gray-600">질문 {index}</div>
                 <div className="r16 brand-900">
-                    {(type === "response" || type === "suggested") && question.replace(answer, blank)}
-                    {type === "result" && <StyledQuestion text={question} answer={answer} />}
+                    {(type === "response" || type === "suggested") && question}
+                    {type === "result" && <StyledQuestion text={question} />}
                 </div>
             </div>
             {

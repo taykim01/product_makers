@@ -6,32 +6,44 @@ import { useEffect, useState } from "react"
 import { sampleQuestion } from "../data"
 import Button from "@/presentation/components/button"
 import QuestionItem from "@/presentation/components/question_item"
-import { useAppSelector } from "@/presentation/states/store"
+import { useAppDispatch, useAppSelector } from "@/presentation/states/store"
+import UploadQuoteDataUseCase from "@/domain/use_case/upload_quote_data_use_case"
+import { Question, Result } from "../types"
+import { applyInput } from "@/presentation/states/reducers/final_questions_slice"
+import LoadingDialogue from "@/presentation/components/loading_dialogue"
 
 export default function Desktop() {
+    const dispatch = useAppDispatch()
     const router = useRouter()
     const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(4)
-    const [questionList, setQuestionList] = useState(sampleQuestion)
-    const [answerList, setAnswerList] = useState<string[]>([])
-    const questionArray = useAppSelector((state: any) => state.finalQuestions.questions)
+    const [questionList, setQuestionList] = useState<Question[]>([])
+    const questionArray: Question[] = useAppSelector((state: any) => state.finalQuestions.questions)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const answerLength: string[] = []
         for (let index = 0; index < sampleQuestion.length; index++) {
             answerLength.push("")
         }
-        setAnswerList(answerLength)
         if (questionArray.length > 0) setQuestionList(questionArray)
     }, [])
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (step < 5) {
             setStep((prevStep) => {
                 if (prevStep >= 5) return prevStep;
                 return prevStep + 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
-        if (step === 5) router.push("/final-result")
+        if (step === 4) {
+            setLoading(true)
+            const upload_quote_data_use_case = new UploadQuoteDataUseCase()
+            const response = await upload_quote_data_use_case.uploadQuoteData(questionList)
+            if (response.result === Result.SUCCESS || response.result === Result.ERROR) setLoading(false)
+        } else if (step === 5) {
+            dispatch(applyInput(questionList))
+            router.push("/final-result")
+        }
     }
 
     const goBack = () => {
@@ -43,17 +55,18 @@ export default function Desktop() {
         }
     }
 
-    const setAnswer = (value: string, index: number) => {
-        const newAnswerList = answerList.map((item, idx) => {
-            if (idx === index) {
-                return value;
+    const answerQuestion = (value: string, index: number) => {
+        const newQuestionList = questionList.map((question, i) => {
+            if (i === index) {
+                return {
+                    ...question,
+                    answer: value
+                }
             }
-            return item;
-        });
-        if (index >= answerList.length) {
-            newAnswerList.push(value);
-        }
-        setAnswerList(newAnswerList);
+            return question
+        })
+        setQuestionList(newQuestionList)
+        console.log(newQuestionList)
     }
 
     return (
@@ -99,7 +112,7 @@ export default function Desktop() {
                                 type="response"
                                 question={question.question}
                                 answer={question.answer}
-                                toParent={(value) => setAnswer(value, index)}
+                                toParent={(value) => answerQuestion(value, index)}
                             />
                         ))}
                     </div>
@@ -113,6 +126,7 @@ export default function Desktop() {
                     </div>
                 </div>
             }
+            {loading && <LoadingDialogue />}
         </main>
     )
 }

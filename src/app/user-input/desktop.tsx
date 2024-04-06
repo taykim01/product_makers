@@ -65,7 +65,6 @@ export default function Desktop() {
                     userSettings.includeWords.join(", ")
                 )
                 if (createQuestionResponse.result === Result.SUCCESS) {
-                    console.log(Array.isArray(createQuestionResponse.payload))
                     dispatch(applyInput(createQuestionResponse.payload))
                     setLoading(false)
                     router.push("/question-list")
