@@ -9,6 +9,7 @@ import { useResponsive } from "@/presentation/hooks/useResponsive";
 import { Device } from "./types";
 import Button from "@/presentation/components/button";
 import "@/app/page.css"
+import InputField from "@/presentation/components/input_field";
 
 export default function Home() {
   const router = useRouter()

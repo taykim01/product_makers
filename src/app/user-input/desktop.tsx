@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Result } from "../types"
 import LoadingDialogue from "@/presentation/components/loading_dialogue"
+import CreateFillInTheBlankUseCase from "@/domain/use_case/create_fill_in_the_blank_use_case"
+import { useAppDispatch } from "@/presentation/states/store"
+import { applyInput } from "@/presentation/states/reducers/final_questions_slice"
 
 export default function Desktop() {
     const router = useRouter()
@@ -27,6 +30,7 @@ export default function Desktop() {
         excludeWords: []
     })
     const titles = ["교재나 시험 내용을 입력해주세요", "내용을 확인해주세요", "필수 정보를 입력해주세요"]
+    const dispatch = useAppDispatch();
 
     const handleClick = async () => {
         if (step < 4) {
@@ -36,18 +40,45 @@ export default function Desktop() {
             });
         }
         if (step === 1) {
-            setLoading(true)
-            const read_file_use_case = new ReadFileUseCase()
-            const response = await read_file_use_case.readFile(file)
-            if (response.result === Result.SUCCESS) {
-                setRawText(response.payload)
-                setLoading(false)
-            }
+            if (textOrFile === 0) return
             else {
-                alert(response.message)
+                setLoading(true)
+                const read_file_use_case = new ReadFileUseCase()
+                const response = await read_file_use_case.readFile(file)
+                if (response.result === Result.SUCCESS) {
+                    setRawText(response.payload)
+                    setLoading(false)
+                }
+                else {
+                    alert(response.message)
+                    setLoading(false)
+                }
+            }
+        } else if (step === 3) {
+            setLoading(true)
+            const create_fill_in_the_blank_use_case = new CreateFillInTheBlankUseCase()
+            const createKeyPhrasesResponse = await create_fill_in_the_blank_use_case.quoteKeyPhrases(rawText, userSettings.questionCount)
+            if (createKeyPhrasesResponse.result === Result.SUCCESS) {
+                const createQuestionResponse = await create_fill_in_the_blank_use_case.createQuestion(
+                    createKeyPhrasesResponse.payload,
+                    userSettings.excludeWords.join(", "),
+                    userSettings.includeWords.join(", ")
+                )
+                if (createQuestionResponse.result === Result.SUCCESS) {
+                    console.log(Array.isArray(createQuestionResponse.payload))
+                    dispatch(applyInput(createQuestionResponse.payload))
+                    setLoading(false)
+                    router.push("/question-list")
+                } else {
+                    alert(createQuestionResponse.message)
+                    setLoading(false)
+                
+                }
+            } else {
+                alert(createKeyPhrasesResponse.message)
                 setLoading(false)
             }
-        } else if (step === 3) router.push("/question-list")
+        }
     }
 
     const getDisabled = () => {
@@ -55,7 +86,6 @@ export default function Desktop() {
             if (textOrFile === 0) return rawText === "" ? true : false
             else return file === null ? true : false
         } else if (step === 3) {
-            if (userSettings.blankCount === 0) return true
             if (userSettings.questionCount === 0) return true
             return false
         }
@@ -87,6 +117,7 @@ export default function Desktop() {
                                         placeholder="강의 내용을 입력해주세요"
                                         toParent={(value: any) => setRawText(value)}
                                         required={false}
+                                        value={rawText}
                                     />
                                     : <InputField
                                         type="file"
@@ -113,6 +144,7 @@ export default function Desktop() {
                             placeholder="강의 내용을 입력해주세요"
                             toParent={(value: any) => setRawText(value)}
                             required={false}
+                            value={rawText}
                         />
                         <div className="ase">
                             <Button
@@ -128,12 +160,6 @@ export default function Desktop() {
                     step === 3 &&
                     <div className="vf gap24" style={{ height: "100%" }}>
                         <div className="question-grid" style={{ height: "100%" }}>
-                            <InputField
-                                type="select"
-                                title="문장 당 빈칸 개수"
-                                required={true}
-                                toParent={(value: any) => setUserSettings({ ...userSettings, blankCount: value })}
-                            />
                             <InputField
                                 type="number"
                                 title="문제 개수"

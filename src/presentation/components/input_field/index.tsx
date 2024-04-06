@@ -43,7 +43,7 @@ export default function InputField(
                     className="input-large r16 gray-700"
                     placeholder={placeholder}
                     onChange={handleChange}
-                    value={input}
+                    value={value || ""}
                 />
             )
         case "file":
@@ -60,7 +60,6 @@ export default function InputField(
                             type="file"
                             style={{ display: "none" }}
                             className="input-large r16 gray-700"
-                            placeholder={placeholder}
                             onChange={handleChange}
                         />
                     </div>

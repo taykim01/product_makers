@@ -38,8 +38,7 @@ export default function QuestionItem(
             }
             {
                 type === "suggested" &&
-                <div className="hf gap4">
-                    <Button type="mini" text="빈칸 옮기기" onClick={subOnClick} />
+                <div>
                     <Button type="mini" text="삭제하기" icon={<Icon type="trash" />} onClick={onClick} />
                 </div>
             }

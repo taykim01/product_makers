@@ -1,21 +1,17 @@
 import CodeResponse from "@/app/code_response";
 import { Result } from "@/app/types";
+import OpenAI from "openai";
 
 export default class OpenAIService {
-  getQuoteKeyPhrases(quoteKeyPhrasesPrompt: string): CodeResponse {
-    require('dotenv').config();
-    const OpenAIApi = require('openai');
-
-    const openai = new OpenAIApi({
-        api_key: 'process.env.OPENAI_API_KEY'
-    });
+  async getQuoteKeyPhrases(quoteKeyPhrasesPrompt: string): Promise<CodeResponse> {
+    const openai = new OpenAI({apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY, dangerouslyAllowBrowser: true});
       
     try {
-      const response = openai.chat.completions.create({  // const response = await openai.chat.completions.create
+      const response = await openai.chat.completions.create({  // const response = await openai.chat.completions.create
           model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: "You are an expert teacher who quotes sentences from a given raw text. User will require you to quote sentences from a raw text."
-            +"\n\n- Do NOT change the text.\n- Do NOT summarize.\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form of string list."
+            +"\n\n- Do NOT change the text.\n- Do NOT summarize.\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form javascript arrays of sentences."
             +"\n\n###For Example###"
             +"\nrawText = The most important aspect of yourself is your self. To discover where this sense of self"
             +"\narises, neuroscientists have explored the brain activity that underlies our constant sense of"
@@ -41,7 +37,7 @@ export default class OpenAIService {
             +"\n1984). Because birthdays are within self-schemas, if your friend’s birthday is close to yours,"
             +"\nyou’ll be more likely to remember it (Kesebir & Oishi, 2010). The self-schemas that make"
             +"\nup our self-concepts help us organize and retrieve our experiences."            
-            +"\n\nquoteList = [\"The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds.\"]" },
+            +"\nYour response should be: The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds." },
             { role: 'user', content: quoteKeyPhrasesPrompt },
           ],
         });
@@ -61,23 +57,18 @@ export default class OpenAIService {
     }
   }
 
-  getQuestion(prompt: string): CodeResponse {
-    require('dotenv').config();
-    const OpenAIApi = require('openai');
-
-    const openai = new OpenAIApi({
-        api_key: 'process.env.OPENAI_API_KEY'
-    });
+  async getQuestion(prompt: string): Promise<CodeResponse> {
+    const openai = new OpenAI({apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY, dangerouslyAllowBrowser: true});
       
     try {
-      const response = openai.chat.completions.create({  // const response = await openai.chat.completions.create
+      const response = await openai.chat.completions.create({  // const response = await openai.chat.completions.create
           model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: "You are an expert teacher who extracts keywords from given sentences. User will require you to quote sentences from a raw text."
-            +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form of object list.\nkeywordList length MUST match the length of quoteList."
+            +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form of JSON array.\nkeywordList length MUST match the length of quoteList."
             +"\n\n###For Example###"            
-            +"\n\nquoteList = [\"The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds.\"]"
-            +"\n\nkeywordList = [{keyword1:\"medial prefrontal cortex\", keyword2:\"brain hemispheres\", keyword3=\"self\"}, {keyword1:\"self-concept\", keyword2:\"beliefs\", keyword3=\"self-schemas\"}, {keyword1:\"Schemas\", keyword2:\"mental\", keyword3=\"organize\"}]" },
+            +"\n\nIf quoteList is:  [\"The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds.\"]"
+            +"\n\nYour response must be: \"medial prefrontal cortex\",\"self-concept\",\"schemas\" in JSON array format." },
             { role: 'user', content: prompt },
           ],
         });

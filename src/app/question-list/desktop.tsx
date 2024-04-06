@@ -6,12 +6,14 @@ import { useEffect, useState } from "react"
 import { sampleQuestion } from "../data"
 import Button from "@/presentation/components/button"
 import QuestionItem from "@/presentation/components/question_item"
+import { useAppSelector } from "@/presentation/states/store"
 
 export default function Desktop() {
     const router = useRouter()
     const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(4)
     const [questionList, setQuestionList] = useState(sampleQuestion)
     const [answerList, setAnswerList] = useState<string[]>([])
+    const questionArray = useAppSelector((state: any) => state.finalQuestions.questions)
 
     useEffect(() => {
         const answerLength: string[] = []
@@ -19,6 +21,7 @@ export default function Desktop() {
             answerLength.push("")
         }
         setAnswerList(answerLength)
+        if (questionArray.length > 0) setQuestionList(questionArray)
     }, [])
 
     const handleClick = () => {
@@ -63,12 +66,11 @@ export default function Desktop() {
                         {questionList.map((question, index) => (
                             <QuestionItem
                                 key={index}
-                                index={index}
+                                index={index + 1}
                                 type="suggested"
                                 question={question.question}
                                 answer={question.answer}
                                 onClick={() => setQuestionList(questionList.filter((_, i) => i !== index))}
-                                subOnClick={() => { }}
                             />
                         ))}
                     </div>
