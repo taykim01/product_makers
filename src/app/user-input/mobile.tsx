@@ -184,7 +184,7 @@ export default function Mobile() {
             {loading && <LoadingDialogue />}
             <FixedButton
                 onClick={handleClick}
-                text={step === 3 ? "질문 생성하기!" : "다음으로"}
+                text={step === 3 ? "질문 생성하기!" : step == 2 ? "확인했어요" : "다음으로"}
                 color="gray"
                 disabled={getDisabled()}
             />

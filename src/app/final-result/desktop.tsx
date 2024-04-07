@@ -65,7 +65,7 @@ export default function Desktop() {
                 <div className="ase">
                     <Button
                         type="main"
-                        text="다음으로"
+                        text="홈으로"
                         onClick={() => router.push("/")}
                         disabled={false}
                     />
