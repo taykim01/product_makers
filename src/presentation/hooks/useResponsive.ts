@@ -9,7 +9,7 @@ export const useResponsive = (): Responsive => {
     tablet: 1024,
   };
 
-  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 393);
+  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : breakingPoints.mobile);
   const [responsive, setResponsive] = useState(Device.desktop);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const useResponsive = (): Responsive => {
 
   useEffect(() => {
     if (width !== undefined) {
-      if (width <= breakingPoints.mobile) {
+      if (width <= breakingPoints.tablet) {
         setResponsive(Device.mobile);
       } else {
         setResponsive(Device.desktop);
