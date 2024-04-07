@@ -8,7 +8,7 @@ import InputField from "@/presentation/components/input_field"
 import ProgressBar from "@/presentation/components/progress_bar"
 import SegmentedControl from "@/presentation/components/segmented_control"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Result } from "../types"
 import LoadingDialogue from "@/presentation/components/loading_dialogue"
 import CreateFillInTheBlankUseCase from "@/domain/use_case/create_fill_in_the_blank_use_case"
@@ -31,6 +31,32 @@ export default function Desktop() {
     })
     const titles = ["교재나 시험 내용을 입력해주세요", "내용을 확인해주세요", "필수 정보를 입력해주세요"]
     const dispatch = useAppDispatch();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileChange = (e: any) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setFile(file);
+        }
+    };
+
+    const handleFileInputClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleDragOver = (e: any) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = (e: any) => {
+        e.preventDefault();
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const file = e.dataTransfer.files[0];
+            setFile(file);
+        }
+    };
 
     const handleClick = async () => {
         if (step < 4) {
@@ -83,7 +109,7 @@ export default function Desktop() {
     const getDisabled = () => {
         if (step === 1) {
             if (textOrFile === 0) return rawText === "" ? true : false
-            else return file === null ? true : false
+            else return !file
         } else if (step === 2) {
             return rawText.length > 6400 ? true : false // '내용을 확인해주세요' 단계에서 rawText의 길이가 6400자 이상인 경우 다음으로 넘어가지 않도록
         } else if (step === 3) {
@@ -120,12 +146,32 @@ export default function Desktop() {
                                         required={false}
                                         value={rawText}
                                     />
-                                    : <InputField
-                                        type="file"
-                                        toParent={(value: any) => setFile(value)}
-                                        required={false}
-                                    />
-                            }
+                                    : (
+                                        <>
+                                            <div onDragOver={handleDragOver} onDrop={handleDrop} onClick={handleFileInputClick} style={{ display: 'flex',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    padding: '40px 20px',
+                                                    flexDirection: 'column',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    borderRadius: '16px',
+                                                    boxSizing: 'border-box',
+                                                    border: 'none',
+                                                    outline: 'none',
+                                                    resize: 'none',
+                                                    backgroundColor: 'var(--white)',
+                                                    fontFamily: 'PretendardVariable',
+                                                    fontSize: '16px',
+                                                    fontWeight: '400',
+                                                    cursor: 'pointer',
+                                                    margin: '10px 0',
+                                                    }}>
+                                                {file ? file.name : "이미지나 PDF 파일을 여기에 드래그 앤 드롭하거나 클릭해서 선택하세요."}
+                                            </div>
+                                            <input type="file" style={{ display: 'none' }} onChange={handleFileChange} ref={fileInputRef} />
+                                        </>
+                            )}
                         </div>
                         <div className="ase">
                             <Button
