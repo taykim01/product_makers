@@ -22,7 +22,7 @@ export type ResultCode = {
 
 export type QuestionResult = "correct" | "wrong";
 
-export type IconProps = "trash" | "correct" | "wrong" | "back";
+export type IconProps = "trash" | "correct" | "wrong" | "back" | "logo";
 export type ButtonProps = "main" | "sub" | "mini";
 export type InputFieldProps =
   | "text"

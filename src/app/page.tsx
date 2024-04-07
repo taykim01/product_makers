@@ -37,7 +37,6 @@ export default function Home() {
   const initData = async () => {
     const read_questions_use_case = new ReadQuestionsUseCase()
     const response = await read_questions_use_case.readQuestions()
-    console.log(response)
     if (response.result === Result.SUCCESS) {
       setQuestionList(response.payload)
       setLoading(false)
