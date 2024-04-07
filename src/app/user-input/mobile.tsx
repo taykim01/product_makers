@@ -82,6 +82,8 @@ export default function Mobile() {
         if (step === 1) {
             if (textOrFile === 0) return rawText === "" ? true : false
             else return file ? false : true
+        } else if (step === 2) {
+            return rawText.length > 6400 ? true : false // '내용을 확인해주세요' 단계에서 rawText의 길이가 6400자 이상인 경우 다음으로 넘어가지 않도록
         } else if (step === 3) {
             if (userSettings.questionCount === 0) return true
             return false
@@ -137,6 +139,13 @@ export default function Mobile() {
                         required={false}
                         value={rawText}
                     />
+                    <div
+                        style={{
+                            color: rawText.length > 6400 ? 'red' : 'grey',
+                        }}
+                    >
+                        {`${rawText.length}/6400`}
+                    </div>
                 </div>
             }
             {
