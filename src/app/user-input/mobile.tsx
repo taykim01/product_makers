@@ -99,6 +99,9 @@ export default function Mobile() {
                 return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
+        if (step === 1) router.back()
+        else if (step === 2) setStep(1)
+        else if (step === 3) setStep(2)
     }
 
     return (

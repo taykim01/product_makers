@@ -97,13 +97,25 @@ export default function Desktop() {
                 } else {
                     alert(createQuestionResponse.message)
                     setLoading(false)
-                
+
                 }
             } else {
                 alert(createKeyPhrasesResponse.message)
                 setLoading(false)
             }
         }
+    }
+
+    const goBack = () => {
+        if (step < 4) {
+            setStep((prevStep) => {
+                if (prevStep >= 1) return prevStep;
+                return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
+            });
+        }
+        if (step === 1) router.back()
+        else if (step === 2) setStep(1)
+        else if (step === 3) setStep(2)
     }
 
     const getDisabled = () => {
@@ -148,32 +160,39 @@ export default function Desktop() {
                                     />
                                     : (
                                         <>
-                                            <div onDragOver={handleDragOver} onDrop={handleDrop} onClick={handleFileInputClick} style={{ display: 'flex',
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    padding: '40px 20px',
-                                                    flexDirection: 'column',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    borderRadius: '16px',
-                                                    boxSizing: 'border-box',
-                                                    border: 'none',
-                                                    outline: 'none',
-                                                    resize: 'none',
-                                                    backgroundColor: 'var(--white)',
-                                                    fontFamily: 'PretendardVariable',
-                                                    fontSize: '16px',
-                                                    fontWeight: '400',
-                                                    cursor: 'pointer',
-                                                    margin: '10px 0',
-                                                    }}>
+                                            <div onDragOver={handleDragOver} onDrop={handleDrop} onClick={handleFileInputClick} style={{
+                                                display: 'flex',
+                                                width: '100%',
+                                                height: '100%',
+                                                padding: '40px 20px',
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                borderRadius: '16px',
+                                                boxSizing: 'border-box',
+                                                border: 'none',
+                                                outline: 'none',
+                                                resize: 'none',
+                                                backgroundColor: 'var(--white)',
+                                                fontFamily: 'PretendardVariable',
+                                                fontSize: '16px',
+                                                fontWeight: '400',
+                                                cursor: 'pointer',
+                                                margin: '10px 0',
+                                            }}>
                                                 {file ? file.name : "이미지나 PDF 파일을 여기에 드래그 앤 드롭하거나 클릭해서 선택하세요."}
                                             </div>
                                             <input type="file" style={{ display: 'none' }} onChange={handleFileChange} ref={fileInputRef} />
                                         </>
-                            )}
+                                    )}
                         </div>
-                        <div className="ase">
+                        <div className="ase hf gap8">
+                            <Button
+                                type="sub"
+                                text="뒤로가기"
+                                onClick={goBack}
+                                disabled={false}
+                            />
                             <Button
                                 type="main"
                                 text="다음으로"
@@ -200,7 +219,13 @@ export default function Desktop() {
                         >
                             {`${rawText.length}/6400`}
                         </div>
-                        <div className="ase">
+                        <div className="ase hf gap8">
+                            <Button
+                                type="sub"
+                                text="뒤로가기"
+                                onClick={goBack}
+                                disabled={false}
+                            />
                             <Button
                                 type="main"
                                 text="다음으로"
@@ -240,7 +265,13 @@ export default function Desktop() {
                                 toParent={(value: any) => setUserSettings({ ...userSettings, excludeWords: value })}
                             />
                         </div>
-                        <div className="ase">
+                        <div className="ase hf gap8">
+                            <Button
+                                type="sub"
+                                text="뒤로가기"
+                                onClick={goBack}
+                                disabled={false}
+                            />
                             <Button
                                 type="main"
                                 text="다음으로"

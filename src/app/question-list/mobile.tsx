@@ -52,6 +52,8 @@ export default function Mobile() {
                 return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
+        if (step === 4) router.back()
+        else if (step === 5) setStep(4)
     }
 
     const answerQuestion = (value: string, index: number) => {
@@ -69,7 +71,7 @@ export default function Mobile() {
 
     return (
         <main className="vf" style={{ backgroundColor: "var(--white)", flexGrow: 1, paddingBottom: 120 }}>
-            <Header type={step === 5 ? "default" : "progress"} color="white" state={step} onClick={goBack} />
+            <Header type={step === 5 ? "back" : "progress"} color="white" state={step} onClick={goBack} />
             {
                 step === 4 && <div className="vf yp40 xp20 gap40 bb" style={{ height: "100vh" }}>
                     <div className="gray-900 b24">문제를 확인해주세요</div>

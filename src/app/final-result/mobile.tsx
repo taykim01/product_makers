@@ -26,8 +26,7 @@ export default function Mobile() {
                 return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
-        if (step === 4) setStep(3)
-        else if (step === 5) router.back()
+        router.push("/")
     }
 
     const result = {

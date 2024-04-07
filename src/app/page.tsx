@@ -41,7 +41,7 @@ export default function Home() {
       setQuestionList(response.payload)
       setLoading(false)
     }
-    else console.log(response.message)
+    else alert(response.message)
   }
 
   useEffect(() => {
