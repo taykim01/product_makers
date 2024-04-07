@@ -9,11 +9,8 @@ export default class CreateFillInTheBlankUseCase {
     questionNum: number
   ): Promise<CodeResponse> {
     const quoteKeyPhrasesPrompt: string =
-      "Extract " +
-      questionNum +
-      " quotes from the following text:\n" +
       rawText +
-      "\nPlease give me the quotes in a JSON format.";
+      "\n\nPlease give me only " + questionNum + " quotes in a JSON format.\nCONVERT \\n into a space.";
 
     const open_ai_service = new OpenAIService();
     const keyPhraseResponse = await open_ai_service.getQuoteKeyPhrases(

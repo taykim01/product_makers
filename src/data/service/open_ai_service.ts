@@ -11,7 +11,7 @@ export default class OpenAIService {
           model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: "You are an expert teacher who quotes sentences from a given raw text. User will require you to quote sentences from a raw text."
-            +"\n\n- Do NOT change the text.\n- Do NOT summarize.\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form javascript arrays of sentences."
+            +"\n\n- Do NOT change the text.\n- Do NOT summarize.\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n- Try to quotes LONGER sentences.\n- Ignore topics or titles such as: \"사회규범 vs 법규범의 공통점과 차이점\", \"폭력은 정당화 될 수 있는가?\"\n\nYour output must be in a form javascript arrays of sentences."
             +"\n\n###For Example###"
             +"\nrawText = The most important aspect of yourself is your self. To discover where this sense of self"
             +"\narises, neuroscientists have explored the brain activity that underlies our constant sense of"
@@ -65,7 +65,7 @@ export default class OpenAIService {
           model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: "You are an expert teacher who extracts keywords from given sentences. User will require you to quote sentences from a raw text."
-            +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n\nYour output must be in a form of JSON array.\nkeywordList length MUST match the length of quoteList."
+            +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n- - If there is a list of words such as \"Three logical operators: and, or, and not\", try extracting the whole list into a keyword such as: \"and, or, and not\".\n\nYour output must be in a form of JSON array.\nkeywordList length MUST match the length of quoteList."
             +"\n\n###For Example###"            
             +"\n\nIf quoteList is:  [\"The \\\“medial prefrontal cortex,\\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\", \"The elements of your self-concept, the specific beliefs by which you define yourself, are your self-schemas\", \"Schemas are mental templates by which we organize our worlds.\"]"
             +"\n\nYour response must be: \"medial prefrontal cortex\",\"self-concept\",\"schemas\" in JSON array format." },
