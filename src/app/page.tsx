@@ -11,6 +11,7 @@ import "@/app/page.css"
 import { useEffect, useState } from "react";
 import ReadQuestionsUseCase from "@/domain/use_case/read_questions_use_case";
 import LoadingDialogue from "@/presentation/components/loading_dialogue";
+import QuoteRepository from "@/data/respository/quote_repository";
 
 export default function Home() {
   const router = useRouter()
@@ -36,6 +37,7 @@ export default function Home() {
   const initData = async () => {
     const read_questions_use_case = new ReadQuestionsUseCase()
     const response = await read_questions_use_case.readQuestions()
+    console.log(response)
     if (response.result === Result.SUCCESS) {
       setQuestionList(response.payload)
       setLoading(false)

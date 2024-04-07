@@ -5,6 +5,6 @@ export default class ReadQuestionsUseCase {
     async readQuestions(): Promise<CodeResponse> {
         const quote_repository = new QuoteRepository()
         const response = await quote_repository.readQuotes()
-        return new CodeResponse(response.result, response.message, response.payload)
+        return new CodeResponse(response.result, response.errorCode, response.payload)
     }
 }

@@ -45,13 +45,13 @@ export default class OpenAIService {
 
       return new CodeResponse(
         Result.SUCCESS,
-        "성공적으로 quoteList를 받아왔습니다.",
+        "DATA_KEY_PHRASES_SUCCESS",
         answer
       );
     } catch (error) {
       return new CodeResponse(
         Result.ERROR,
-        "quoteList를 받아오는 과정에서 에러가 발생했습니다.",
+        "DATA_KEY_PHRASES_FAIL",
         error
       );
     }
@@ -76,13 +76,13 @@ export default class OpenAIService {
 
       return new CodeResponse(
         Result.SUCCESS,
-        "성공적으로 keywordList를 받아왔습니다.",
+        "DATA_QUESTION_SUCCESS",
         answer
       );
     } catch (error) {
       return new CodeResponse(
         Result.ERROR,
-        "keywordList를 받아오는 과정에서 에러가 발생했습니다.",
+        "DATA_QUESTION_FAIL",
         error
       );
     }

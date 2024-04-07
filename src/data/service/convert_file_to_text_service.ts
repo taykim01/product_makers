@@ -52,10 +52,10 @@ export default class ConvertFileToTextService {
       
       const answer = queryResponse.data.content; 
 
-      return new CodeResponse(Result.SUCCESS, "변환 성공", answer);
+      return new CodeResponse(Result.SUCCESS, "DATA_CONV_SUCCESS", answer);
     } catch (error) {
       console.error(error);
-      return new CodeResponse(Result.ERROR, "변환 실패", error);
+      return new CodeResponse(Result.ERROR, "DATA_CONV_FAIL", error);
     }
   }
 }

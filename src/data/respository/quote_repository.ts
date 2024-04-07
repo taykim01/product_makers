@@ -19,9 +19,9 @@ export default class QuoteRepository {
 
       const docRef = doc(collection(db, "questions"));
       await setDoc(docRef, newQuote);
-      return new CodeResponse(Result.SUCCESS, "성공!", docRef.id);
+      return new CodeResponse(Result.SUCCESS, "DATA_QR_UPLOAD_SUCCESS", docRef.id);
     } catch (error) {
-      return new CodeResponse(Result.ERROR, "quote 업로드 실패", error);
+      return new CodeResponse(Result.ERROR, "DATA_QR_UPLOAD_FAIL", error);
     }
   }
 
@@ -36,9 +36,9 @@ export default class QuoteRepository {
           id: doc.id,
         });
       });
-      return new CodeResponse(Result.SUCCESS, "성공!", questions);
+      return new CodeResponse(Result.SUCCESS, "DATA_QR_READ_SUCCESS", questions);
     } catch (error) {
-      return new CodeResponse(Result.ERROR, "quote 불러오기 실패", error);
+      return new CodeResponse(Result.ERROR, "DATA_QR_READ_FAIL", error);
     }
   }
 }

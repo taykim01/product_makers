@@ -7,6 +7,7 @@ export default class CodeResponse {
   errorCode: string;
   payload: any;
 
+
   getErrorMessage(errorCode: string): string {
     const errorType = CodeMessage.find((error) => error.code === errorCode);
     const errorMessage = errorType?.message;
@@ -16,6 +17,7 @@ export default class CodeResponse {
 
   constructor(result: Result, errorCode: string, payload: any = {}) {
     if (!result || !errorCode || !payload) {
+
       const missingParameters = [];
 
       if (!result) missingParameters.push("result");
@@ -29,8 +31,8 @@ export default class CodeResponse {
     }
 
     this.result = result;
-    this.message = this.getErrorMessage(errorCode);
     this.errorCode = errorCode;
+    this.message = this.getErrorMessage(errorCode);
     this.payload = payload;
   }
 }
