@@ -21,3 +21,14 @@
   flex-shrink: 0;
   width: 100%;
 }
+
+@media screen and (min-width: 1024px) {
+  .score-gray {
+    height: 8px;
+  }
+
+  .score-color {
+    height: 8px;
+  }
+  
+}
