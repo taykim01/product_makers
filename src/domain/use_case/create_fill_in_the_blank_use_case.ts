@@ -19,15 +19,15 @@ export default class CreateFillInTheBlankUseCase {
     );
 
     const quoteListString = keyPhraseResponse.payload;
+    // console.log("Debug: quoteListString = "+ quoteListString)
 
     let quoteListArray;
     try {
       quoteListArray = JSON.parse(quoteListString);
     } catch (error) {
+      console.log("ERROR: JSON FORMAT")
       quoteListArray = [
-        "Something went wrong.",
-        "We will fix this error soon.",
-        "Thank you for your support and patience.",
+        ""
       ];
     }
 
