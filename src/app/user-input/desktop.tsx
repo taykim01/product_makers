@@ -83,7 +83,7 @@ export default function Desktop() {
         } else if (step === 3) {
             setLoading(true)
             const create_fill_in_the_blank_use_case = new CreateFillInTheBlankUseCase()
-            const createKeyPhrasesResponse = await create_fill_in_the_blank_use_case.quoteKeyPhrases(rawText, userSettings.questionCount)
+            const createKeyPhrasesResponse = await create_fill_in_the_blank_use_case.quoteKeyPhrases(rawText, userSettings.questionCount, userSettings.excludeWords.join(", "), userSettings.includeWords.join(", "))
             if (createKeyPhrasesResponse.result === Result.SUCCESS) {
                 const createQuestionResponse = await create_fill_in_the_blank_use_case.createQuestion(
                     createKeyPhrasesResponse.payload,

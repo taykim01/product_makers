@@ -10,29 +10,25 @@ export default class CreateFillInTheBlankUseCase {
     exclusion: string,
     inclusion: string
   ): Promise<CodeResponse> {
-    // console.log("Debug: CreateFillInTheBlankUseCase.quoteKeyPhrases called");
-    
-    // console.log("Debug: exclusion = " + exclusion);
-    // console.log("Debug: inclusion = " + inclusion);
-
     const open_ai_service = new OpenAIService();
     const keyPhraseResponse = await open_ai_service.getQuoteKeyPhrases(
-      rawText, questionNum, exclusion, inclusion
+      rawText,
+      questionNum,
+      exclusion,
+      inclusion
     );
 
     const quoteListString = keyPhraseResponse.payload;
 
     let quoteListArray;
     try {
-      // console.log("Debug: quoteListString =\n" + quoteListString);
       quoteListArray = JSON.parse(quoteListString);
-      // console.log("Debug_alpha: JSON is successfully parsed.")
-      // if (quoteListArray.length != questionNum) {console.log("Error_alpha: The number of quotes != number of questionNum.")}
-      // else {console.log("Debug_beta: The number of quotes === number of questionNum.")}
-      
     } catch (error) {
-      quoteListArray = ["Something went wrong.", "We will fix this error soon.", "Thank you for your support and patience."];
-      // console.log("Error: JSON is somehow invalid.")
+      quoteListArray = [
+        "Something went wrong.",
+        "We will fix this error soon.",
+        "Thank you for your support and patience.",
+      ];
     }
 
     return new CodeResponse(
@@ -47,24 +43,17 @@ export default class CreateFillInTheBlankUseCase {
     exclusion: string,
     inclusion: string
   ): Promise<CodeResponse> {
-    // console.log("Debug: createQuestion called");
-
-    // console.log("Debug: exclusion = " + exclusion);
-    // console.log("Debug: inclusion = " + inclusion);
-
     const open_ai_service = new OpenAIService();
 
     const finalQuestionList: Question[] = [];
 
     const getKeywordsResponse = await open_ai_service.getQuestion(
-      quoteList, exclusion, inclusion
+      quoteList,
+      exclusion,
+      inclusion
     );
 
-    const keywordList = JSON.parse(getKeywordsResponse.payload)
-    // console.log("Debug_beta: JSON is successfully parsed.")
-    //if (keywordList.length != quoteList.length) {console.log("Error_beta: The number of keywords != number of quotes.")}
-    //else {console.log("Debug_beta: The number of keywords === number of quotes.")}
-
+    const keywordList = JSON.parse(getKeywordsResponse.payload);
     if (getKeywordsResponse.result === Result.SUCCESS) {
       for (let i = 0; i < quoteList.length; i++) {
         finalQuestionList.push({
