@@ -6,23 +6,33 @@ import OpenAIService from "@/data/service/open_ai_service";
 export default class CreateFillInTheBlankUseCase {
   async quoteKeyPhrases(
     rawText: string,
-    questionNum: number
+    questionNum: number,
+    exclusion: string,
+    inclusion: string
   ): Promise<CodeResponse> {
-    const quoteKeyPhrasesPrompt: string =
-      rawText +
-      "\n\nPlease give me only " + questionNum + " quotes in a JSON format.\nCONVERT \\n into a space.";
+    console.log("Debug: CreateFillInTheBlankUseCase.quoteKeyPhrases called");
+    
+    console.log("Debug: exclusion = " + exclusion);
+    console.log("Debug: inclusion = " + inclusion);
 
     const open_ai_service = new OpenAIService();
     const keyPhraseResponse = await open_ai_service.getQuoteKeyPhrases(
-      quoteKeyPhrasesPrompt
+      rawText, questionNum, exclusion, inclusion
     );
 
     const quoteListString = keyPhraseResponse.payload;
+
     let quoteListArray;
     try {
+      console.log("Debug: quoteListString =\n" + quoteListString);
       quoteListArray = JSON.parse(quoteListString);
+      console.log("Debug_alpha: JSON is successfully parsed.")
+      if (quoteListArray.length != questionNum) {console.log("Error_alpha: The number of quotes != number of questionNum.")}
+      else {console.log("Debug_beta: The number of quotes === number of questionNum.")}
+      
     } catch (error) {
-      quoteListArray = quoteListString;
+      quoteListArray = ["Something went wrong.", "We will fix this error soon.", "Thank you for your support and patience."];
+      console.log("Error: JSON is somehow invalid.")
     }
 
     return new CodeResponse(
@@ -37,20 +47,23 @@ export default class CreateFillInTheBlankUseCase {
     exclusion: string,
     inclusion: string
   ): Promise<CodeResponse> {
+    console.log("Debug: createQuestion called");
+
+    console.log("Debug: exclusion = " + exclusion);
+    console.log("Debug: inclusion = " + inclusion);
+
     const open_ai_service = new OpenAIService();
 
     const finalQuestionList: Question[] = [];
 
-    const getKeywordPrompt = `Get the single most important keyword from each of the following sentences: ${Array.isArray(quoteList) ? quoteList.join(", ") : quoteList}.
-      \nInclude the following words, if possible: ${inclusion}.
-      \nExclude the following words: ${exclusion}.
-      \nReturn the result in the following format: [(keyword for sentence 1), (keyword for sentence 2), (keyword for sentence 3), etc].`;
     const getKeywordsResponse = await open_ai_service.getQuestion(
-      getKeywordPrompt
+      quoteList, exclusion, inclusion
     );
-    
 
     const keywordList = JSON.parse(getKeywordsResponse.payload)
+    console.log("Debug_beta: JSON is successfully parsed.")
+    if (keywordList.length != quoteList.length) {console.log("Error_beta: The number of keywords != number of quotes.")}
+    else {console.log("Debug_beta: The number of keywords === number of quotes.")}
 
     if (getKeywordsResponse.result === Result.SUCCESS) {
       for (let i = 0; i < quoteList.length; i++) {
