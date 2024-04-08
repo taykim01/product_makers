@@ -2,7 +2,7 @@ import "./score.css"
 
 export default function Score({ correct, wrong }: { correct: number, wrong: number }) {
     return (
-        <div className="vf gap4">
+        <div className="vf gap8">
             <div className="hf gap4">
                 <div className="sb16 gray-800">{(correct * 100 / (wrong + correct)).toFixed(2)}%</div>
                 <div className="r16 gray-500">정답률</div>

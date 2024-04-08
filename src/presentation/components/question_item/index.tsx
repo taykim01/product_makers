@@ -6,9 +6,12 @@ import { blank } from "@/app/data";
 import ResultItem from "../result_item";
 
 export default function QuestionItem(
-    { type, question, answer, onClick, subOnClick, index, toParent, userAnswer }
-        : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, subOnClick?: () => void, toParent?: (value: string) => void, userAnswer?: string}
+    { type, question, answer, onClick, index, toParent, userAnswer }
+        : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, toParent?: (value: string) => void, userAnswer?: string}
 ) {
+
+    const finalUserAnswer = userAnswer?.toLowerCase().replace(/\s+/g, "").replace("-", "").trim()
+    const finalAnswer = answer?.toLowerCase().replace(/\s+/g, "").replace("-", "").trim()
 
     function StyledQuestion({ text }: { text: string }) {
         const before = text.split(blank)[0];
@@ -45,7 +48,7 @@ export default function QuestionItem(
             {
                 type === "result" &&
                 <ResultItem
-                    result={userAnswer === answer ? "correct" : "wrong"}
+                    result={finalUserAnswer === finalAnswer ? "correct" : "wrong"}
                     userAnswer={userAnswer}
                 />
             }

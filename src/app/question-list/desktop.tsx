@@ -53,6 +53,8 @@ export default function Desktop() {
                 return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
+        if (step === 4) router.back()
+        else if (step === 5) setStep(4)
     }
 
     const answerQuestion = (value: string, index: number) => {
@@ -86,7 +88,13 @@ export default function Desktop() {
                             />
                         ))}
                     </div>
-                    <div className="ase">
+                    <div className="ase hf gap8">
+                        <Button
+                            type="sub"
+                            text="뒤로가기"
+                            onClick={goBack}
+                            disabled={false}
+                        />
                         <Button
                             type="main"
                             text="다음으로"
@@ -115,7 +123,13 @@ export default function Desktop() {
                             />
                         ))}
                     </div>
-                    <div className="ase">
+                    <div className="ase hf gap8">
+                        <Button
+                            type="sub"
+                            text="뒤로가기"
+                            onClick={goBack}
+                            disabled={false}
+                        />
                         <Button
                             type="main"
                             text="다음으로"

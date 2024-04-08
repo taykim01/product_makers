@@ -29,13 +29,13 @@ export default function Desktop() {
     }
 
     const result = {
-        correct: questionList.filter((question) => question.answer.trim() === question.keyword).length,
-        wrong: questionList.filter((question) => question.answer.trim() !== question.keyword).length
+        correct: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim() === question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim()).length,
+        wrong: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim() !== question.keyword).length
     }
 
     return (
         <main className="vf" style={{ backgroundColor: "var(--white)", flexGrow: 1 }}>
-            <Header type="text" color="white" onClick={goBack} />
+            <Header type="toHome" color="white" onClick={goBack} />
 
             <div className="vf yp40 xp120 gap40 bb" style={{ height: "calc(100vh - 108px)" }}>
                 <div className="hf ca sbj">
@@ -65,7 +65,7 @@ export default function Desktop() {
                 <div className="ase">
                     <Button
                         type="main"
-                        text="다음으로"
+                        text="홈으로"
                         onClick={() => router.push("/")}
                         disabled={false}
                     />

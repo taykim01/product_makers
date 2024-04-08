@@ -55,7 +55,7 @@ export default function Mobile() {
         } else if (step === 3) {
             setLoading(true)
             const create_fill_in_the_blank_use_case = new CreateFillInTheBlankUseCase()
-            const createKeyPhrasesResponse = await create_fill_in_the_blank_use_case.quoteKeyPhrases(rawText, userSettings.questionCount)
+            const createKeyPhrasesResponse = await create_fill_in_the_blank_use_case.quoteKeyPhrases(rawText, userSettings.questionCount, userSettings.excludeWords.join(", "), userSettings.includeWords.join(", "))
             if (createKeyPhrasesResponse.result === Result.SUCCESS) {
                 const createQuestionResponse = await create_fill_in_the_blank_use_case.createQuestion(
                     createKeyPhrasesResponse.payload,
@@ -82,6 +82,8 @@ export default function Mobile() {
         if (step === 1) {
             if (textOrFile === 0) return rawText === "" ? true : false
             else return file ? false : true
+        } else if (step === 2) {
+            return rawText.length > 6400 ? true : false // '내용을 확인해주세요' 단계에서 rawText의 길이가 6400자 이상인 경우 다음으로 넘어가지 않도록
         } else if (step === 3) {
             if (userSettings.questionCount === 0) return true
             return false
@@ -97,6 +99,16 @@ export default function Mobile() {
                 return prevStep - 1 as 0 | 1 | 2 | 3 | 4 | 5;
             });
         }
+        if (step === 1) router.back()
+        else if (step === 2) setStep(1)
+        else if (step === 3) setStep(2)
+    }
+
+    const handleQuestionNum = (value: number) => {
+        if (value > 10) setUserSettings({ ...userSettings, questionCount: 10 })
+        else if (value < 0) setUserSettings({ ...userSettings, questionCount: 0 })
+        else setUserSettings({ ...userSettings, questionCount: value })
+        
     }
 
     return (
@@ -137,6 +149,13 @@ export default function Mobile() {
                         required={false}
                         value={rawText}
                     />
+                    <div
+                        style={{
+                            color: rawText.length > 6400 ? 'red' : 'grey',
+                        }}
+                    >
+                        {`${rawText.length}/6400`}
+                    </div>
                 </div>
             }
             {
@@ -148,7 +167,9 @@ export default function Mobile() {
                             type="number"
                             title="문제 개수"
                             required={true}
-                            toParent={(value: any) => setUserSettings({ ...userSettings, questionCount: value })}
+                            toParent={(value: any) => handleQuestionNum(value)}
+                            placeholder="Beta: 질문은 0~10개만 생성되어요."
+                            value={userSettings.questionCount.toString()}
                         />
                         <InputField
                             type="hashtag"
@@ -175,7 +196,7 @@ export default function Mobile() {
             {loading && <LoadingDialogue />}
             <FixedButton
                 onClick={handleClick}
-                text={step === 3 ? "질문 생성하기!" : "다음으로"}
+                text={step === 3 ? "질문 생성하기!" : step == 2 ? "확인했어요" : "다음으로"}
                 color="gray"
                 disabled={getDisabled()}
             />

@@ -9,6 +9,13 @@
   border-radius: 8px;
 }
 
+@media screen and (min-width: 1024px) {
+  .result {
+    max-width: 353px;
+  }
+  
+}
+
 .result-correct {
   background-color: var(--dullblue-100);
   color: var(--dullblue-500);

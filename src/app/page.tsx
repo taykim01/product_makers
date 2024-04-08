@@ -11,6 +11,7 @@ import "@/app/page.css"
 import { useEffect, useState } from "react";
 import ReadQuestionsUseCase from "@/domain/use_case/read_questions_use_case";
 import LoadingDialogue from "@/presentation/components/loading_dialogue";
+import QuoteRepository from "@/data/respository/quote_repository";
 
 export default function Home() {
   const router = useRouter()
@@ -40,7 +41,7 @@ export default function Home() {
       setQuestionList(response.payload)
       setLoading(false)
     }
-    else console.log(response.message)
+    else alert(response.message)
   }
 
   useEffect(() => {

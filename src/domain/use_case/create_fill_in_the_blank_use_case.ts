@@ -6,26 +6,29 @@ import OpenAIService from "@/data/service/open_ai_service";
 export default class CreateFillInTheBlankUseCase {
   async quoteKeyPhrases(
     rawText: string,
-    questionNum: number
+    questionNum: number,
+    exclusion: string,
+    inclusion: string
   ): Promise<CodeResponse> {
-    const quoteKeyPhrasesPrompt: string =
-      "Extract " +
-      questionNum +
-      " quotes from the following text:\n" +
-      rawText +
-      "\nPlease give me the quotes in a JSON format.";
-
     const open_ai_service = new OpenAIService();
     const keyPhraseResponse = await open_ai_service.getQuoteKeyPhrases(
-      quoteKeyPhrasesPrompt
+      rawText,
+      questionNum,
+      exclusion,
+      inclusion
     );
 
     const quoteListString = keyPhraseResponse.payload;
+    // console.log("Debug: quoteListString = "+ quoteListString)
+
     let quoteListArray;
     try {
       quoteListArray = JSON.parse(quoteListString);
     } catch (error) {
-      quoteListArray = quoteListString;
+      console.log("ERROR: JSON FORMAT")
+      quoteListArray = [
+        ""
+      ];
     }
 
     return new CodeResponse(
@@ -44,17 +47,13 @@ export default class CreateFillInTheBlankUseCase {
 
     const finalQuestionList: Question[] = [];
 
-    const getKeywordPrompt = `Get the single most important keyword from each of the following sentences: ${Array.isArray(quoteList) ? quoteList.join(", ") : quoteList}.
-      \nInclude the following words, if possible: ${inclusion}.
-      \nExclude the following words: ${exclusion}.
-      \nReturn the result in the following format: [(keyword for sentence 1), (keyword for sentence 2), (keyword for sentence 3), etc].`;
     const getKeywordsResponse = await open_ai_service.getQuestion(
-      getKeywordPrompt
+      quoteList,
+      exclusion,
+      inclusion
     );
-    
 
-    const keywordList = JSON.parse(getKeywordsResponse.payload)
-
+    const keywordList = JSON.parse(getKeywordsResponse.payload);
     if (getKeywordsResponse.result === Result.SUCCESS) {
       for (let i = 0; i < quoteList.length; i++) {
         finalQuestionList.push({

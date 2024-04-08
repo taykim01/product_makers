@@ -53,7 +53,7 @@ export default function InputField(
                         {
                             input
                                 ? <div className="r16 gray-700">{input}</div>
-                                : <div className="b26 gray-700">이미지, PDF를 올리거나,<br />텍스트를 붙여넣어주세요!</div>
+                                : <div className="b26 gray-700">클릭해서, 이미지나 PDF를 올려주세요!</div>
                         }
                         <input
                             id="file"
@@ -102,7 +102,7 @@ export default function InputField(
                                             type={type === "number" ? "number" : "text"}
                                             className="input r16 gray-900"
                                             onChange={handleChange}
-                                            value={input}
+                                            value={value ? value : input}
                                         />
                                 }
                                 {

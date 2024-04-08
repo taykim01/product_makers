@@ -1,6 +1,5 @@
 import CodeResponse from "@/app/code_response";
 import QuoteRepository from "@/data/respository/quote_repository";
-import QuoteModel from "../model/quote_model";
 import { Question, Result } from "@/app/types";
 
 export default class UploadQuoteDataUseCase {
@@ -15,13 +14,13 @@ export default class UploadQuoteDataUseCase {
         if (responseList.includes(Result.ERROR)) {
             return new CodeResponse(
                 Result.ERROR,
-                "quote 업로드 실패",
+                "DOMAIN_QUOTE_UPLOAD_FAIL",
                 {}
             );
         } else {
             return new CodeResponse(
                 Result.SUCCESS,
-                "성공!",
+                "DOMAIN_QUOTE_UPLOAD_SUCCESS",
                 {}
             );
         }
