@@ -12,7 +12,7 @@ export default class OpenAIService {
   ): Promise<CodeResponse> {
     const MAXCOUNT = 3;
     var count: number;
-    console.log("Debug: OpenAIService.getQuoteKeyPhrases called");
+    // console.log("Debug: OpenAIService.getQuoteKeyPhrases called");
     const openai = new OpenAI({apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY, dangerouslyAllowBrowser: true});
 
     const quoteSystemPrompt = "You are an expert teacher who quotes sentences from a given raw text. User will require you to quote sentences from a raw text."
@@ -72,7 +72,7 @@ export default class OpenAIService {
           count = 0;
           while (answer && answer.includes(exclusionList[i])) {
             count++;
-            console.log("---------RETRY count " + count + ": A quote contained an exclusion... " + exclusionList[i]);
+            // console.log("---------RETRY count " + count + ": A quote contained an exclusion... " + exclusionList[i]);
             response = await openai.chat.completions.create({
               model: 'gpt-3.5-turbo',
               messages: [
@@ -95,7 +95,7 @@ export default class OpenAIService {
           count = 0;
           while (answer && !(answer.includes(inclusionList[i]))) {
             count++;
-            console.log("---------RETRY count " + count + ": None of the quotes contained an inclusion... " + inclusionList[i]);
+            // console.log("---------RETRY count " + count + ": None of the quotes contained an inclusion... " + inclusionList[i]);
             response = await openai.chat.completions.create({
               model: 'gpt-3.5-turbo',
               messages: [
@@ -133,11 +133,11 @@ export default class OpenAIService {
   ): Promise<CodeResponse> {
     const keywordList: string[] = [];
     var found: boolean = false;
-    console.log("Debug: OpenAIService.getQuestion called");
+    // console.log("Debug: OpenAIService.getQuestion called");
     const openai = new OpenAI({apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY, dangerouslyAllowBrowser: true});
     
     const keywordSystemPrompt = "You are an expert teacher who extracts keywords or keyphrases from given sentences. User will require you to quote sentences from a raw text."
-    +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n- KEEP Capital letters\nYour output must be a single word."
+    +"\n\n- Whenever the text contains \' or \", convert them into \\\' or \\\"\n- KEEP Capital letters\n- AVOID 조사 such as: \"은, 는, 이, 가, 을, 를\"\n- AVOID two or more words.\nYour output must be a single word."
     +"\n\n###For Example###"
     +"If quote is:  \"The \\“medial prefrontal cortex,\\” a neuron path located in the cleft between your brain hemispheres just behind your eyes, seemingly helps stitch together your sense of self.\""
     +"Your response must be: \"medial prefrontal cortex\""
@@ -162,7 +162,7 @@ export default class OpenAIService {
         if (inclusion != "") {for (let j = 0; j < inclusionList.length; j++) {
           if (quoteList[i].includes(inclusionList[j])) {
             keywordList.push(inclusionList[j]);
-            console.log("Debug for quote" + i + ": Inclusion: "+ inclusionList[j] +" was pushed into keywordList.");
+            // console.log("Debug for quote" + i + ": Inclusion: "+ inclusionList[j] +" was pushed into keywordList.");
             found = true;
             break;
           }
@@ -177,11 +177,11 @@ export default class OpenAIService {
           });
           answer = response.choices[0].message.content;
           if (answer) keywordList.push(answer);
-          console.log("Debug for quote" + i + ": Keyword from OpenAI: "+ answer +" was pushed into keywordList.");
+          // console.log("Debug for quote" + i + ": Keyword from OpenAI: "+ answer +" was pushed into keywordList.");
         }
       }
 
-      console.log("Debug: keywordList =\n" + keywordList);
+      // console.log("Debug: keywordList =\n" + keywordList);
 
       return new CodeResponse(
         Result.SUCCESS,

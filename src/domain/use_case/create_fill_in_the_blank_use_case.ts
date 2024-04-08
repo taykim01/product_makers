@@ -10,10 +10,10 @@ export default class CreateFillInTheBlankUseCase {
     exclusion: string,
     inclusion: string
   ): Promise<CodeResponse> {
-    console.log("Debug: CreateFillInTheBlankUseCase.quoteKeyPhrases called");
+    // console.log("Debug: CreateFillInTheBlankUseCase.quoteKeyPhrases called");
     
-    console.log("Debug: exclusion = " + exclusion);
-    console.log("Debug: inclusion = " + inclusion);
+    // console.log("Debug: exclusion = " + exclusion);
+    // console.log("Debug: inclusion = " + inclusion);
 
     const open_ai_service = new OpenAIService();
     const keyPhraseResponse = await open_ai_service.getQuoteKeyPhrases(
@@ -24,15 +24,15 @@ export default class CreateFillInTheBlankUseCase {
 
     let quoteListArray;
     try {
-      console.log("Debug: quoteListString =\n" + quoteListString);
+      // console.log("Debug: quoteListString =\n" + quoteListString);
       quoteListArray = JSON.parse(quoteListString);
-      console.log("Debug_alpha: JSON is successfully parsed.")
-      if (quoteListArray.length != questionNum) {console.log("Error_alpha: The number of quotes != number of questionNum.")}
-      else {console.log("Debug_beta: The number of quotes === number of questionNum.")}
+      // console.log("Debug_alpha: JSON is successfully parsed.")
+      // if (quoteListArray.length != questionNum) {console.log("Error_alpha: The number of quotes != number of questionNum.")}
+      // else {console.log("Debug_beta: The number of quotes === number of questionNum.")}
       
     } catch (error) {
       quoteListArray = ["Something went wrong.", "We will fix this error soon.", "Thank you for your support and patience."];
-      console.log("Error: JSON is somehow invalid.")
+      // console.log("Error: JSON is somehow invalid.")
     }
 
     return new CodeResponse(
@@ -47,10 +47,10 @@ export default class CreateFillInTheBlankUseCase {
     exclusion: string,
     inclusion: string
   ): Promise<CodeResponse> {
-    console.log("Debug: createQuestion called");
+    // console.log("Debug: createQuestion called");
 
-    console.log("Debug: exclusion = " + exclusion);
-    console.log("Debug: inclusion = " + inclusion);
+    // console.log("Debug: exclusion = " + exclusion);
+    // console.log("Debug: inclusion = " + inclusion);
 
     const open_ai_service = new OpenAIService();
 
@@ -61,9 +61,9 @@ export default class CreateFillInTheBlankUseCase {
     );
 
     const keywordList = JSON.parse(getKeywordsResponse.payload)
-    console.log("Debug_beta: JSON is successfully parsed.")
-    if (keywordList.length != quoteList.length) {console.log("Error_beta: The number of keywords != number of quotes.")}
-    else {console.log("Debug_beta: The number of keywords === number of quotes.")}
+    // console.log("Debug_beta: JSON is successfully parsed.")
+    //if (keywordList.length != quoteList.length) {console.log("Error_beta: The number of keywords != number of quotes.")}
+    //else {console.log("Debug_beta: The number of keywords === number of quotes.")}
 
     if (getKeywordsResponse.result === Result.SUCCESS) {
       for (let i = 0; i < quoteList.length; i++) {
