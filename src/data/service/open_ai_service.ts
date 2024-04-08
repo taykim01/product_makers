@@ -62,9 +62,6 @@ export default class OpenAIService {
         });
       var answer = response.choices[0].message.content;
 
-      exclusion = "";
-      inclusion = "";
-
       if (exclusion != "") {
         const exclusionList = exclusion.split(", ");
 
