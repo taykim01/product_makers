@@ -131,6 +131,15 @@ export default function Desktop() {
         else return false
     }
 
+    const handleQuestionNum = (value: number) => {
+        if (value > 10) setUserSettings({ ...userSettings, questionCount: 10 })
+        else if (value < 0) setUserSettings({ ...userSettings, questionCount: 0 })
+        else setUserSettings({ ...userSettings, questionCount: value })
+        
+    }
+
+    console.log(userSettings.questionCount)
+
     return (
         <main className="vf" style={{ backgroundColor: `${step === 3 ? "var(--white)" : "var(--gray-50)"}`, height: "100%" }}>
             <Header type="default" color="white" />
@@ -243,7 +252,9 @@ export default function Desktop() {
                                 type="number"
                                 title="문제 개수"
                                 required={true}
-                                toParent={(value: any) => setUserSettings({ ...userSettings, questionCount: value })}
+                                toParent={(value: any) => handleQuestionNum(value)}
+                                placeholder="Beta: 질문은 0~10개만 생성되어요."
+                                value={userSettings.questionCount.toString()}
                             />
                             <InputField
                                 type="hashtag"

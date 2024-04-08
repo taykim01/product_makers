@@ -104,6 +104,13 @@ export default function Mobile() {
         else if (step === 3) setStep(2)
     }
 
+    const handleQuestionNum = (value: number) => {
+        if (value > 10) setUserSettings({ ...userSettings, questionCount: 10 })
+        else if (value < 0) setUserSettings({ ...userSettings, questionCount: 0 })
+        else setUserSettings({ ...userSettings, questionCount: value })
+        
+    }
+
     return (
         <main className="vf" style={{ maxHeight: "100vh", backgroundColor: `${step === 3 ? "var(--white)" : "var(--gray-50)"}`, flexGrow: 1, paddingBottom: 120 }}>
             <Header type="progress" color="white" state={step} onClick={goBack} />
@@ -160,7 +167,9 @@ export default function Mobile() {
                             type="number"
                             title="문제 개수"
                             required={true}
-                            toParent={(value: any) => setUserSettings({ ...userSettings, questionCount: value })}
+                            toParent={(value: any) => handleQuestionNum(value)}
+                            placeholder="Beta: 질문은 0~10개만 생성되어요."
+                            value={userSettings.questionCount.toString()}
                         />
                         <InputField
                             type="hashtag"

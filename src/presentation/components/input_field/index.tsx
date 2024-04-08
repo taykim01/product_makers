@@ -102,7 +102,7 @@ export default function InputField(
                                             type={type === "number" ? "number" : "text"}
                                             className="input r16 gray-900"
                                             onChange={handleChange}
-                                            value={input}
+                                            value={value ? value : input}
                                         />
                                 }
                                 {
