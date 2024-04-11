@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,6 +14,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const analytics = getAnalytics(app);
+
+let analytics;
+isSupported().then((isSupported) => {
+    if (isSupported) {
+        analytics = getAnalytics(app);
+    }
+}).catch(error => {
+    console.error("Analytics is not supported in this environment", error);
+});
 
 export { db, analytics };
