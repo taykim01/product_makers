@@ -1,61 +1,46 @@
 import CodeResponse from '@/app/code_response';
 import { Result } from '@/app/types';
-import Tesseract from 'tesseract.js';
 import axios from 'axios';
-// import FormData from 'form-data';
 
 export default class ConvertFileToTextService {
-  private apiKey = 'sec_2nBADEiQM30aRKWHQqzeWpe1otKhPErj';
+  private firebaseFunctionUrl = 'https://asia-northeast3-kairos-3326d.cloudfunctions.net/detectText';
 
   async convert(file: File): Promise<CodeResponse> {
-    if (file.type.includes('pdf')) {
-      return this.convertPdfToText(file);
-    } else {
-      return this.convertImageToText(file);
-    }
-  }
-
-  private async convertImageToText(file: File): Promise<CodeResponse> {
+    const fileType = file.type.includes('pdf') ? 'pdf' : 'image';
+    
     try {
-      const { data } = await Tesseract.recognize(file, 'kor+eng');
-      return new CodeResponse(Result.SUCCESS, "변환 성공", data.text);
-    } catch (error) {
-      return new CodeResponse(Result.ERROR, "변환 실패", error);
-    }
-  }
-
-  private async convertPdfToText(file: File): Promise<CodeResponse> {
-    try {
-      // Upload the PDF file
-      const formData = new FormData();
-      formData.append('file', file);
+      // Convert file to Base64
+      const base64 = await this.fileToBase64(file);
+      const body = fileType === 'pdf' ? { fileType, pdf: base64 } : { fileType, image: base64 };
       
-      const sourceIdResponse = await axios.post('https://api.chatpdf.com/v1/sources/add-file', formData, {
-        headers: {
-          'x-api-key': this.apiKey,
-        },
+      // Call the Firebase Cloud Function
+      const response = await axios.post(this.firebaseFunctionUrl, body, {
+        headers: { 'Content-Type': 'application/json' },
       });
-      const sourceId = sourceIdResponse.data.sourceId;
-      const queryResponse = await axios.post('https://api.chatpdf.com/v1/chats/message', {
-      sourceId: sourceId,
-      messages: [
-        {
-          role: "user",
-          content: "I need plain text of this. Do not rearrange and give me as its order. Do not say anything else."
-        }
-      ],
-    }, {
-        headers: {
-          'x-api-key': this.apiKey,
-        },
-      });
-      
-      const answer = queryResponse.data.content; 
 
-      return new CodeResponse(Result.SUCCESS, "DATA_CONV_SUCCESS", answer);
-    } catch (error) {
+      if (response.status === 200) {
+        return new CodeResponse(Result.SUCCESS, "변환 성공", response.data.text);
+      } else {
+        throw new Error(`Failed with status: ${response.status}`);
+      }
+    } catch (error: any) {
       console.error(error);
-      return new CodeResponse(Result.ERROR, "DATA_CONV_FAIL", error);
+      return new CodeResponse(Result.ERROR, "변환 실패", error.message || error.toString());
     }
+  }
+
+  private async fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          resolve(reader.result.toString().split(',')[1]);
+        } else {
+          reject(new Error('Failed to read file.'));
+        }
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
   }
 }

@@ -12,6 +12,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || ""; // Assign an empty string as default value if NEXT_PUBLIC_GA_ID is undefined
   return (
     <html lang="en">
       <body>{children}<Analytics /></body>
