@@ -2,9 +2,18 @@ const functions = require('firebase-functions');
 const cors = require('cors')({origin: true});
 const vision = require('@google-cloud/vision');
 const { Storage } = require('@google-cloud/storage');
-const { v4: uuidv4 } = require('uuid'); 
-const storage = new Storage();
+const { v4: uuidv4 } = require('uuid');
+
+const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+
+const storage = new Storage({
+    credentials: serviceAccount
+});
 const bucketName = 'kairos-3326d-pdf-tmp';
+
+const client = new vision.ImageAnnotatorClient({
+    credentials: serviceAccount
+});
 
 exports.detectText = functions.region('asia-northeast3').https.onRequest(async (req, res) => {
     cors(req, res, async () => {
@@ -14,8 +23,7 @@ exports.detectText = functions.region('asia-northeast3').https.onRequest(async (
 
         try {
             const fileType = req.body.fileType;
-            const client = new vision.ImageAnnotatorClient();
-            const uniqueId = uuidv4(); 
+            const uniqueId = uuidv4();
 
             if (fileType === 'image') {
                 const [result] = await client.textDetection({ image: { content: req.body.image } });
