@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export const useResponsive = (): Responsive => {
   const breakingPoints = {
     mobile: 393,
-    tablet: 1024,
+    tablet: 768,
   };
 
   const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : breakingPoints.mobile);
