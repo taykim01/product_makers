@@ -30,8 +30,8 @@ export default function Mobile() {
     }
 
     const result = {
-        correct: questionList.filter((question) => question.answer.trim() === question.keyword).length,
-        wrong: questionList.filter((question) => question.answer.trim() !== question.keyword).length
+        correct: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim() === question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim()).length,
+        wrong: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim() !== question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim()).length
     }
 
     return (
