@@ -29,8 +29,8 @@ export default function Desktop() {
     }
 
     const result = {
-        correct: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim() === question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim()).length,
-        wrong: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim() !== question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").trim()).length
+        correct: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").replace(".", "").replace(",", "").replace("\'", "").replace("\"", "").trim() === question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").replace(".", "").replace(",", "").replace("\'", "").replace("\"", "").trim()).length,
+        wrong: questionList.filter((question) => question.answer.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").replace(".", "").replace(",", "").replace("\'", "").replace("\"", "").trim() !== question.keyword.trim().toLowerCase().replace(/\s+/g, "").replace("-", "").replace(".", "").replace(",", "").replace("\'", "").replace("\"", "").trim()).length
     }
 
     return (

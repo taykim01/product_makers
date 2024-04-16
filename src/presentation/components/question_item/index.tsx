@@ -10,8 +10,8 @@ export default function QuestionItem(
         : { type: QuestionTypeProps, question: string, answer: string, index: number, onClick?: () => void, toParent?: (value: string) => void, userAnswer?: string}
 ) {
 
-    const finalUserAnswer = userAnswer?.toLowerCase().replace(/\s+/g, "").replace("-", "").trim()
-    const finalAnswer = answer?.toLowerCase().replace(/\s+/g, "").replace("-", "").trim()
+    const finalUserAnswer = userAnswer?.toLowerCase().replace(/\s+/g, "").replace("-", "").replace(".", "").replace(",", "").replace("\'", "").replace("\"", "").trim()
+    const finalAnswer = answer?.toLowerCase().replace(/\s+/g, "").replace("-", "").replace(".", "").replace(",", "").replace("\'", "").replace("\"", "").trim()
 
     function StyledQuestion({ text }: { text: string }) {
         const before = text.split(blank)[0];
