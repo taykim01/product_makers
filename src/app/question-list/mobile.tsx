@@ -115,7 +115,7 @@ export default function Mobile() {
                 text={step === 4 ? "시작하기" : "다음으로"}
                 color="white"
                 disabled={false}
-                subButtonText={step === 5 ? undefined : "다시 생성하기"}
+                // subButtonText={step === 5 ? undefined : "다시 생성하기"}
                 subButtonOnClick={step === 5 ? undefined : () => { }}
             />
         </main>
